@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Starling Courier — Admin</title>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#14213d;background:#f5f7fb}
+*{box-sizing:border-box}body{margin:0}button,input,select,textarea{font:inherit}button{border:0;border-radius:10px;padding:10px 14px;background:#0b66d4;color:#fff;font-weight:700;cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}button.secondary{background:#e8eef7;color:#18314f}.danger{background:#b42318}.muted{color:#667085}.error{color:#b42318}.success{color:#067647}.hidden{display:none!important}
+.topbar{background:#09234a;color:#fff;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:10}.brand{display:flex;gap:10px;align-items:center}.brand img{width:34px;height:34px;object-fit:contain;border-radius:7px;background:#fff}.brand strong{letter-spacing:.04em}.top-actions{display:flex;gap:8px;align-items:center}
+main{max-width:1280px;margin:0 auto;padding:24px 18px 50px}.card{background:#fff;border:1px solid #e4e9f1;border-radius:16px;padding:18px;box-shadow:0 5px 18px rgba(16,42,67,.06);margin-bottom:18px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}.stats{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:10px}.stat{padding:15px;border:1px solid #e4e9f1;border-radius:12px;background:#fbfcfe}.stat .n{font-size:26px;font-weight:800;margin-top:4px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}h1,h2,h3{margin:0 0 12px}h1{font-size:26px}h2{font-size:19px}h3{font-size:15px}
+label{display:block;font-size:13px;font-weight:700;color:#344054}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #ccd5e2;border-radius:9px;margin:6px 0 12px;background:#fff;color:#182033}textarea{min-height:88px;resize:vertical}.form-actions{display:flex;gap:8px;flex-wrap:wrap}.filters{display:grid;grid-template-columns:1.5fr 1fr auto auto;gap:8px;align-items:end}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:850px}th,td{padding:11px;border-bottom:1px solid #e8edf4;text-align:left;font-size:13px;vertical-align:top}th{color:#667085;font-size:12px;text-transform:uppercase;letter-spacing:.04em}.status{display:inline-flex;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:800;text-transform:capitalize;background:#eef2f6}.status.delivered{background:#e6f4ea;color:#067647}.status.cancelled{background:#fdecec;color:#b42318}.status.in_transit,.status.out_for_delivery{background:#e8f1ff;color:#175cd3}.status.picked_up{background:#fff4db;color:#9a6700}.item{border-top:1px solid #edf0f4;padding:13px 0}.item:first-child{border-top:0}.row{display:flex;gap:10px;align-items:center;justify-content:space-between}.pager{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:13px}.message{padding:8px 0;min-height:20px}.small{font-size:12px}
+.login-wrap{max-width:440px;margin:9vh auto}.login-wrap .brand{margin-bottom:16px}.login-logo{width:44px;height:44px;border-radius:10px}
+dialog{border:0;border-radius:16px;width:min(760px,calc(100vw - 24px));padding:0;box-shadow:0 20px 60px rgba(0,0,0,.25)}dialog::backdrop{background:rgba(9,35,74,.38)}.dialog-body{padding:20px}.dialog-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.timeline{display:grid;gap:10px;margin-top:12px}.event{border-left:3px solid #cfd8e6;padding:4px 0 4px 14px}.event strong{display:block}.event p{margin:4px 0;font-size:13px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.two-col{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+@media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.two-col{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters button{width:100%}}
+@media(max-width:560px){main{padding:18px 12px 40px}.stats{grid-template-columns:repeat(2,1fr)}.topbar{padding:12px}.brand strong{font-size:13px}.card{padding:15px}.filters{grid-template-columns:1fr}.top-actions button.secondary{display:none}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><img src="/starling-courier-logo.svg" alt="Starling Courier"><strong>STARLING COURIER — ADMIN</strong></div>
+  <div class="top-actions"><span id="adminEmail" class="small"></span><button id="logout" class="secondary">Log out</button></div>
+</header>
+<main>
+<section id="login" class="login-wrap card">
+  <div class="brand"><img class="login-logo" src="/starling-courier-logo.svg" alt="Starling Courier"><div><strong>STARLING COURIER</strong><div class="muted small">Operations dashboard</div></div></div>
+  <h1>Admin sign in</h1><p class="muted">Use an authorized staff account.</p>
+  <form id="loginForm"><label>Email<input id="email" type="email" autocomplete="username" required></label><label>Password<input id="password" type="password" autocomplete="current-password" required></label><div class="form-actions"><button>Sign in</button></div></form>
+  <div id="loginMsg" class="message error"></div>
+</section>
+<section id="app" class="hidden">
+  <div class="card"><div class="section-head"><div><h1>Operations overview</h1><div class="muted">Live counts from the production database.</div></div><div class="toolbar"><button id="refreshAll" class="secondary">Refresh all</button></div></div>
+    <div class="stats" style="margin-top:16px">
+      <div class="stat"><div class="muted small">Total shipments</div><div id="stTotal" class="n">—</div></div>
+      <div class="stat"><div class="muted small">In transit</div><div id="stTransit" class="n">—</div></div>
+      <div class="stat"><div class="muted small">Out for delivery</div><div id="stOFD" class="n">—</div></div>
+      <div class="stat"><div class="muted small">Delivered</div><div id="stDelivered" class="n">—</div></div>
+      <div class="stat"><div class="muted small">New quotes</div><div id="stQuotes" class="n">—</div></div>
+      <div class="stat"><div class="muted small">New messages</div><div id="stMessages" class="n">—</div></div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="card"><h2>Create shipment</h2><form id="shipmentForm">
+        <label>Tracking number<input name="trackingNumber" placeholder="e.g. SC-000123" required></label>
+        <div class="grid"><label>Origin city<input name="originCity" required></label><label>Origin country<input name="originCountry" required></label><label>Destination city<input name="destinationCity" required></label><label>Destination country<input name="destinationCountry" required></label></div>
+        <div class="grid"><label>Recipient name<input name="recipientName"></label><label>Recipient phone<input name="recipientPhone"></label><label>Recipient email<input name="recipientEmail" type="email"></label><label>Service type<input name="serviceType" placeholder="Express / Standard"></label><label>Weight (kg)<input name="weightKg" type="number" step="0.01" min="0"></label><label>Estimated delivery<input name="estimatedDeliveryAt" type="datetime-local"></label></div>
+        <label>Package description<textarea name="packageDescription"></textarea></label><label>Initial note<textarea name="initialNote"></textarea></label>
+        <div class="form-actions"><button>Create shipment</button><button type="reset" class="secondary">Clear</button></div><div id="shipmentMsg" class="message"></div>
+      </form></div>
+    </div>
+    <div>
+      <div class="card"><h2>Quick status update</h2><p class="muted small">Select a shipment from the table to load its ID and then update its latest event.</p><form id="statusForm">
+        <label>Shipment ID<input name="id" id="statusShipmentId" readonly required></label><label>Status<select name="status"><option value="picked_up">Picked up</option><option value="in_transit">In transit</option><option value="out_for_delivery">Out for delivery</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select></label><label>Location<input name="location"></label><label>Event note<textarea name="note"></textarea></label>
+        <div class="form-actions"><button id="statusSubmit" disabled>Update status</button></div><div id="statusMsg" class="message"></div>
+      </form></div>
+      <div class="card"><h2>Recent audit activity</h2><div id="audit"><p class="muted">Loading…</p></div></div>
+    </div>
+  </div>
+
+  <div class="card"><div class="section-head"><div><h2>Shipments</h2><div id="shipmentMeta" class="muted small"></div></div></div>
+    <div class="filters"><label>Search<input id="shipmentSearch" placeholder="Tracking, recipient, origin or destination"></label><label>Status<select id="shipmentStatus"><option value="">All statuses</option><option value="created">Created</option><option value="picked_up">Picked up</option><option value="in_transit">In transit</option><option value="out_for_delivery">Out for delivery</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select></label><button id="searchShipments">Search</button><button id="clearShipmentFilters" class="secondary">Clear</button></div>
+    <div class="table-wrap" style="margin-top:10px"><table><thead><tr><th>Tracking</th><th>Status</th><th>Route</th><th>Recipient</th><th>Service</th><th>Updated</th><th></th></tr></thead><tbody id="shipmentsBody"></tbody></table></div><div class="pager"><button id="prevPage" class="secondary">Previous</button><span id="pageInfo" class="muted small">—</span><button id="nextPage" class="secondary">Next</button></div>
+  </div>
+
+  <div class="grid">
+    <div class="card"><div class="section-head"><h2>Quote requests</h2><select id="quoteFilter"><option value="">All</option><option value="new">New</option><option value="reviewing">Reviewing</option><option value="quoted">Quoted</option><option value="closed">Closed</option></select></div><div id="quotes"></div></div>
+    <div class="card"><div class="section-head"><h2>Contact messages</h2><select id="messageFilter"><option value="">All</option><option value="new">New</option><option value="read">Read</option><option value="closed">Closed</option></select></div><div id="messages"></div></div>
+  </div>
+</section>
+</main>
+
+<dialog id="shipmentDialog"><div class="dialog-body"><div class="dialog-head"><div><h2 id="dialogTitle">Shipment</h2><div id="dialogSubtitle" class="muted"></div></div><button type="button" id="closeDialog" class="secondary">Close</button></div><div id="dialogContent" style="margin-top:16px"></div></div></dialog>
+<script>
+const API = window.STARLING_API_BASE || window.location.origin;
+const tokenKey = 'starling_admin_token';
+const userKey = 'starling_admin_user';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = v => v ? new Date(v).toLocaleString() : '—';
+const prettyStatus = s => String(s || '').replaceAll('_',' ');
+let shipmentPage = 0;
+const pageSize = 20;
+let totalShipments = 0;
+
+async function api(path,opt={}) {
+  const headers = {...(opt.headers||{}), Authorization:`Bearer ${sessionStorage.getItem(tokenKey)}`};
+  if (opt.body && !headers['Content-Type']) headers['Content-Type']='application/json';
+  const r = await fetch(API+path,{...opt,headers});
+  const d = await r.json().catch(()=>({}));
+  if (r.status===401) { sessionStorage.removeItem(tokenKey); sessionStorage.removeItem(userKey); location.reload(); throw Error('Session expired.'); }
+  if (!r.ok) throw Error(d.error||'Request failed');
+  return d;
+}
+function setMsg(el,text,kind=''){ el.className='message '+kind; el.textContent=text||''; }
+function showApp(){
+  $('#login').classList.add('hidden'); $('#app').classList.remove('hidden');
+  const user=JSON.parse(sessionStorage.getItem(userKey)||'null'); $('#adminEmail').textContent=user?.email||'';
+  loadAll();
+}
+$('#loginForm').onsubmit=async e=>{e.preventDefault();setMsg($('#loginMsg'),'');try{const r=await fetch(API+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:$('#email').value,password:$('#password').value})});const d=await r.json();if(!r.ok)throw Error(d.error||'Sign in failed');sessionStorage.setItem(tokenKey,d.token);sessionStorage.setItem(userKey,JSON.stringify(d.user));showApp();}catch(err){setMsg($('#loginMsg'),err.message,'error')}};
+$('#logout').onclick=()=>{sessionStorage.removeItem(tokenKey);sessionStorage.removeItem(userKey);location.reload()};
+$('#refreshAll').onclick=loadAll;
+
+$('#shipmentForm').onsubmit=async e=>{e.preventDefault();setMsg($('#shipmentMsg'),'');const b=Object.fromEntries(new FormData(e.target));try{const d=await api('/api/admin/shipments',{method:'POST',body:JSON.stringify(b)});setMsg($('#shipmentMsg'),`Created ${d.shipment.tracking_number}`,'success');e.target.reset();shipmentPage=0;await loadAll();}catch(err){setMsg($('#shipmentMsg'),err.message,'error')}};
+$('#statusForm').onsubmit=async e=>{e.preventDefault();const b=Object.fromEntries(new FormData(e.target));if(!b.id)return;delete b.id;setMsg($('#statusMsg'),'');try{const d=await api('/api/admin/shipments/'+encodeURIComponent($('#statusShipmentId').value)+'/status',{method:'PATCH',body:JSON.stringify(b)});setMsg($('#statusMsg'),`Updated ${d.shipment.tracking_number}`,'success');await loadAll();}catch(err){setMsg($('#statusMsg'),err.message,'error')}};
+
+async function loadOverview(){const d=await api('/api/admin/overview');const s=d.shipments,q=d.quotes,m=d.messages;$('#stTotal').textContent=s.total;$('#stTransit').textContent=s.in_transit;$('#stOFD').textContent=s.out_for_delivery;$('#stDelivered').textContent=s.delivered;$('#stQuotes').textContent=q.new;$('#stMessages').textContent=m.new;}
+async function loadShipments(){
+  const search=encodeURIComponent($('#shipmentSearch').value.trim()); const status=encodeURIComponent($('#shipmentStatus').value); const offset=shipmentPage*pageSize;
+  const d=await api(`/api/admin/shipments?limit=${pageSize}&offset=${offset}&search=${search}&status=${status}`); totalShipments=d.total;
+  $('#shipmentMeta').textContent=`Showing ${totalShipments ? offset+1 : 0}–${Math.min(offset+d.shipments.length,totalShipments)} of ${totalShipments}`;
+  $('#pageInfo').textContent=`Page ${shipmentPage+1}`;$('#prevPage').disabled=shipmentPage===0;$('#nextPage').disabled=offset+d.shipments.length>=totalShipments;
+  $('#shipmentsBody').innerHTML=d.shipments.map(s=>`<tr><td><strong>${esc(s.tracking_number)}</strong></td><td><span class="status ${esc(s.status)}">${esc(prettyStatus(s.status))}</span></td><td>${esc(s.origin_city)}, ${esc(s.origin_country)}<br>→ ${esc(s.destination_city)}, ${esc(s.destination_country)}</td><td>${esc(s.recipient_name||'—')}<br><span class="muted">${esc(s.recipient_email||'')}</span></td><td>${esc(s.service_type||'—')}</td><td>${esc(fmt(s.updated_at))}</td><td><button class="secondary viewShipment" data-id="${esc(s.id)}">View</button> <button class="secondary selectShipment" data-id="${esc(s.id)}">Update</button></td></tr>`).join('')||'<tr><td colspan="7" class="muted">No shipments match the current filters.</td></tr>';
+  document.querySelectorAll('.viewShipment').forEach(b=>b.onclick=()=>viewShipment(b.dataset.id));
+  document.querySelectorAll('.selectShipment').forEach(b=>b.onclick=()=>selectShipment(b.dataset.id));
+}
+async function selectShipment(id){$('#statusShipmentId').value=id;$('#statusSubmit').disabled=false;try{const d=await api('/api/admin/shipments/'+id);const s=d.shipment;$('#statusForm [name=status]').value=s.status==='cancelled'?'cancelled':(s.status==='delivered'?'delivered':'in_transit');$('#statusForm [name=location]').value=s.destination_city||'';$('#statusForm [name=note]').value='';$('#statusForm').scrollIntoView({behavior:'smooth',block:'center'});}catch(err){setMsg($('#statusMsg'),err.message,'error')}}
+async function viewShipment(id){try{const d=await api('/api/admin/shipments/'+id);const s=d.shipment;$('#dialogTitle').textContent=s.tracking_number;$('#dialogSubtitle').textContent=`${s.origin_city}, ${s.origin_country} → ${s.destination_city}, ${s.destination_country}`;$('#dialogContent').innerHTML=`<div class="grid"><div><h3>Shipment details</h3><div class="small"><strong>Status:</strong> ${esc(prettyStatus(s.status))}<br><strong>Service:</strong> ${esc(s.service_type||'—')}<br><strong>Weight:</strong> ${esc(s.weight_kg||'—')} kg<br><strong>ETA:</strong> ${esc(fmt(s.estimated_delivery_at))}<br><strong>Recipient:</strong> ${esc(s.recipient_name||'—')}<br><strong>Email:</strong> ${esc(s.recipient_email||'—')}<br><strong>Phone:</strong> ${esc(s.recipient_phone||'—')}</div></div><div><h3>Package</h3><div class="small">${esc(s.package_description||'No package description provided.')}</div></div></div><h3 style="margin-top:18px">Tracking timeline</h3><div class="timeline">${(s.events||[]).slice().reverse().map(e=>`<div class="event"><strong>${esc(prettyStatus(e.status))}</strong><div class="muted small">${esc(fmt(e.occurredAt))}${e.location?' · '+esc(e.location):''}</div>${e.note?`<p>${esc(e.note)}</p>`:''}</div>`).join('')||'<div class="muted">No tracking events.</div>'}</div><div class="form-actions" style="margin-top:18px"><button type="button" id="editFromDialog">Edit shipment</button></div>`;$('#shipmentDialog').showModal();$('#editFromDialog').onclick=()=>{ $('#shipmentDialog').close(); loadEditForm(s); }}catch(err){alert(err.message)}}
+function loadEditForm(s){
+  $('#dialogTitle').textContent='Edit shipment'; $('#dialogSubtitle').textContent=s.tracking_number;
+  $('#dialogContent').innerHTML=`<form id="editShipmentForm"><div class="grid"><label>Tracking number<input name="trackingNumber" value="${esc(s.tracking_number)}" required></label><label>Service type<input name="serviceType" value="${esc(s.service_type||'')}"></label><label>Origin city<input name="originCity" value="${esc(s.origin_city)}" required></label><label>Origin country<input name="originCountry" value="${esc(s.origin_country)}" required></label><label>Destination city<input name="destinationCity" value="${esc(s.destination_city)}" required></label><label>Destination country<input name="destinationCountry" value="${esc(s.destination_country)}" required></label><label>Recipient name<input name="recipientName" value="${esc(s.recipient_name||'')}"></label><label>Recipient phone<input name="recipientPhone" value="${esc(s.recipient_phone||'')}"></label><label>Recipient email<input name="recipientEmail" type="email" value="${esc(s.recipient_email||'')}"></label><label>Weight (kg)<input name="weightKg" type="number" step="0.01" min="0" value="${esc(s.weight_kg||'')}"></label><label>Estimated delivery<input name="estimatedDeliveryAt" type="datetime-local" value="${s.estimated_delivery_at?new Date(s.estimated_delivery_at).toISOString().slice(0,16):''}"></label></div><label>Package description<textarea name="packageDescription">${esc(s.package_description||'')}</textarea></label><div class="form-actions"><button>Save changes</button><button type="button" id="cancelEdit" class="secondary">Cancel</button></div><div id="editMsg" class="message"></div></form>`;$('#shipmentDialog').showModal();$('#cancelEdit').onclick=()=>$('#shipmentDialog').close();$('#editShipmentForm').onsubmit=async e=>{e.preventDefault();try{const b=Object.fromEntries(new FormData(e.target));await api('/api/admin/shipments/'+s.id,{method:'PATCH',body:JSON.stringify(b)});setMsg($('#statusMsg'),'Shipment details updated.','success');$('#shipmentDialog').close();loadAll();}catch(err){setMsg($('#editMsg'),err.message,'error')}};
+}
+$('#closeDialog').onclick=()=>$('#shipmentDialog').close();
+$('#searchShipments').onclick=()=>{shipmentPage=0;loadShipments().catch(e=>$('#shipmentsBody').innerHTML=`<tr><td colspan="7" class="error">${esc(e.message)}</td></tr>`)};
+$('#clearShipmentFilters').onclick=()=>{$('#shipmentSearch').value='';$('#shipmentStatus').value='';shipmentPage=0;loadShipments()};
+$('#prevPage').onclick=()=>{if(shipmentPage>0){shipmentPage--;loadShipments()}};$('#nextPage').onclick=()=>{if((shipmentPage+1)*pageSize<totalShipments){shipmentPage++;loadShipments()}};
+async function loadQuotes(){const f=encodeURIComponent($('#quoteFilter').value);const d=await api('/api/admin/quotes?limit=50&status='+f);$('#quotes').innerHTML=d.quotes.map(q=>`<div class="item"><div class="row"><strong>${esc(q.name)}</strong><span class="status">${esc(q.status)}</span></div><div class="muted small">${esc(q.origin)} → ${esc(q.destination)} · ${esc(q.service_type)} · ${esc(q.email)}</div><div class="muted small">${esc(fmt(q.created_at))}</div><div class="toolbar" style="margin-top:8px"><button class="secondary qbtn" data-id="${esc(q.id)}" data-status="reviewing">Review</button><button class="secondary qbtn" data-id="${esc(q.id)}" data-status="quoted">Mark quoted</button><button class="secondary qbtn" data-id="${esc(q.id)}" data-status="closed">Close</button></div></div>`).join('')||'<p class="muted">No quote requests.</p>';document.querySelectorAll('.qbtn').forEach(b=>b.onclick=()=>setQuote(b.dataset.id,b.dataset.status))}
+async function setQuote(id,status){try{await api('/api/admin/quotes/'+id+'/status',{method:'PATCH',body:JSON.stringify({status})});await loadQuotes();await loadOverview()}catch(e){alert(e.message)}}
+async function loadMessages(){const f=encodeURIComponent($('#messageFilter').value);const d=await api('/api/admin/messages?limit=50&status='+f);$('#messages').innerHTML=d.messages.map(m=>`<div class="item"><div class="row"><strong>${esc(m.name)}</strong><span class="status">${esc(m.status)}</span></div><div class="muted small">${esc(m.email)}${m.phone?' · '+esc(m.phone):''}</div><div style="margin:8px 0;font-size:13px">${esc(m.message)}</div><div class="toolbar"><button class="secondary mbtn" data-id="${esc(m.id)}" data-status="read">Mark read</button><button class="secondary mbtn" data-id="${esc(m.id)}" data-status="closed">Close</button></div></div>`).join('')||'<p class="muted">No contact messages.</p>';document.querySelectorAll('.mbtn').forEach(b=>b.onclick=()=>setMessage(b.dataset.id,b.dataset.status))}
+async function setMessage(id,status){try{await api('/api/admin/messages/'+id+'/status',{method:'PATCH',body:JSON.stringify({status})});await loadMessages();await loadOverview()}catch(e){alert(e.message)}}
+async function loadAudit(){const d=await api('/api/admin/audit-logs?limit=20');$('#audit').innerHTML=d.logs.map(l=>`<div class="item"><strong>${esc(l.action)}</strong><div class="muted small">${esc(l.admin_email||'system')} · ${esc(fmt(l.created_at))}</div></div>`).join('')||'<p class="muted">No audit activity yet.</p>'}
+async function loadAll(){try{await Promise.all([loadOverview(),loadShipments(),loadQuotes(),loadMessages(),loadAudit()])}catch(e){if(e.message!=='Session expired.') console.error(e)}}
+$('#quoteFilter').onchange=loadQuotes;$('#messageFilter').onchange=loadMessages;
+if(sessionStorage.getItem(tokenKey)) showApp();
+</script>
+</body></html>

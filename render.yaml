@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: starling-courier-service
+    runtime: node
+    plan: free
+    buildCommand: cd backend && npm install --omit=dev
+    startCommand: cd backend && npm run migrate && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: starling-courier-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
+      - key: NOTIFICATION_EMAIL
+        sync: false
+
+databases:
+  - name: starling-courier-db
+    databaseName: starling_courier
+    user: starling
+    plan: free

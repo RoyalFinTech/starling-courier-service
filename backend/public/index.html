@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Starling Courier Service — Delivering Your World</title>
+<meta content="Starling Courier Service provides fast, secure domestic and international courier and logistics solutions, with real-time shipment tracking." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=Inter:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy-deep:#081026;
+  --navy:#0c1a3a;
+  --navy-mid:#14285a;
+  --navy-soft:#1c3468;
+  --steel-100:#eef1f6;
+  --steel-200:#dbe1ea;
+  --steel-300:#b9c3d4;
+  --steel-500:#8291ab;
+  --ink:#0a1220;
+  --white:#ffffff;
+  --blue:#2f6fed;
+  --blue-bright:#4f8bff;
+  --silver-grad:linear-gradient(135deg,#f5f7fb 0%,#c9d2e0 45%,#9aa8c2 60%,#eef2f8 100%);
+  --route-dash: 10;
+  --shadow-lg: 0 24px 60px -20px rgba(8,16,38,0.35);
+  --shadow-md: 0 12px 30px -12px rgba(8,16,38,0.25);
+  --ease: cubic-bezier(.16,.8,.24,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+}
+body{
+  font-family:'Inter',sans-serif;
+  color:var(--ink);
+  background:var(--white);
+  line-height:1.5;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+ul{list-style:none;}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.02em;color:var(--navy);}
+.mono{font-family:'IBM Plex Mono',monospace;}
+.container{max-width:1240px;margin:0 auto;padding:0 32px;}
+@media (max-width:640px){.container{padding:0 20px;}}
+:focus-visible{outline:2.5px solid var(--blue-bright);outline-offset:3px;border-radius:4px;}
+
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--blue);
+  font-weight:600;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
+.eyebrow::before{
+  content:"";
+  width:22px;height:1.5px;
+  background:var(--blue);
+  display:inline-block;
+}
+
+/* ===== Header ===== */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:18px 0;
+  transition:all .4s var(--ease);
+}
+header.scrolled{
+  background:rgba(8,16,38,0.78);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  padding:12px 0;
+  box-shadow:0 8px 30px -12px rgba(0,0,0,.35);
+}
+.nav-wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand img{height:40px;width:auto;}
+.brand-text{display:flex;flex-direction:column;line-height:1.05;}
+.brand-text strong{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:17px;font-weight:700;color:var(--white);
+  letter-spacing:-0.01em;
+}
+.brand-text span{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel-300);
+}
+nav.primary-nav{display:flex;align-items:center;gap:36px;}
+nav.primary-nav a{
+  color:var(--steel-200);font-size:14.5px;font-weight:500;position:relative;padding:6px 0;
+  transition:color .25s;
+}
+nav.primary-nav a::after{
+  content:"";position:absolute;left:0;bottom:0;height:1.5px;width:0;
+  background:var(--blue-bright);transition:width .3s var(--ease);
+}
+nav.primary-nav a:hover{color:var(--white);}
+nav.primary-nav a:hover::after{width:100%;}
+.header-actions{display:flex;align-items:center;gap:14px;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 24px;border-radius:8px;font-size:14.5px;font-weight:600;
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease), background .25s;
+  white-space:nowrap;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--blue) 0%,#1f4fc4 100%);
+  color:#fff;
+  box-shadow:0 8px 24px -8px rgba(47,111,237,.6);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px -10px rgba(47,111,237,.75);}
+.btn-ghost{
+  color:var(--steel-100);border:1px solid rgba(255,255,255,.22);
+}
+.btn-ghost:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.06);}
+.btn-dark{background:var(--navy);color:#fff;}
+.btn-dark:hover{background:var(--navy-mid);transform:translateY(-2px);}
+.menu-toggle{display:none;flex-direction:column;gap:5px;padding:8px;}
+.menu-toggle span{width:24px;height:2px;background:#fff;border-radius:2px;transition:.3s;}
+
+.mobile-nav{
+  position:fixed;inset:0;background:var(--navy-deep);z-index:1100;
+  display:flex;flex-direction:column;padding:26px 24px;
+  transform:translateX(100%);transition:transform .4s var(--ease);
+}
+.mobile-nav.open{transform:translateX(0);}
+.mobile-nav-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;}
+.mobile-nav a{font-family:'Space Grotesk',sans-serif;font-size:26px;color:#fff;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08);font-weight:600;}
+.mobile-nav .btn{margin-top:24px;width:100%;}
+
+/* ===== Hero ===== */
+.hero{
+  position:relative;
+  background:radial-gradient(120% 100% at 15% 0%, #142a5c 0%, var(--navy) 42%, var(--navy-deep) 100%);
+  color:#fff;
+  padding:168px 0 120px;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 20%, black 10%, transparent 75%);
+  pointer-events:none;
+}
+.hero-grid{
+  display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;position:relative;z-index:2;
+}
+.hero h1{
+  font-size:clamp(38px,4.6vw,62px);font-weight:700;line-height:1.06;color:#fff;margin:20px 0 22px;
+}
+.hero h1 em{font-style:normal;color:var(--blue-bright);}
+.hero p.lede{
+  font-size:17.5px;color:var(--steel-300);max-width:480px;line-height:1.65;margin-bottom:34px;
+}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:52px;}
+.hero-proof{display:flex;gap:34px;flex-wrap:wrap;}
+.hero-proof div{border-left:2px solid rgba(255,255,255,.14);padding-left:14px;}
+.hero-proof strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:22px;color:#fff;}
+.hero-proof span{font-size:12.5px;color:var(--steel-300);}
+
+/* hero visual */
+.hero-visual{position:relative;height:520px;}
+.orbit-svg{position:absolute;inset:0;width:100%;height:100%;}
+.route-path{
+  fill:none;stroke:url(#routeGrad);stroke-width:1.6;stroke-dasharray:6 8;
+  animation:dash 22s linear infinite;
+  opacity:.85;
+}
+@keyframes dash{to{stroke-dashoffset:-400;}}
+.pulse-dot{animation:pulse 2.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:.35;r:3;}50%{opacity:1;r:5.5;}}
+.globe-core{animation:rotateSlow 60s linear infinite;transform-origin:center;}
+@keyframes rotateSlow{to{transform:rotate(360deg);}}
+.parcel-card{
+  position:absolute;bottom:26px;left:6px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(14px);
+  border-radius:14px;padding:16px 18px;width:230px;
+  box-shadow:var(--shadow-lg);
+  animation:floatY 5s ease-in-out infinite;
+}
+@keyframes floatY{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.parcel-card .pc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.parcel-card .pc-top span{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:var(--steel-300);}
+.pc-status{display:flex;align-items:center;gap:6px;font-size:11px;color:#7ee0a6;font-weight:600;}
+.pc-status i{width:6px;height:6px;border-radius:50%;background:#7ee0a6;box-shadow:0 0 8px #7ee0a6;}
+.parcel-card h4{color:#fff;font-size:14.5px;margin-bottom:2px;}
+.parcel-card p{color:var(--steel-300);font-size:12px;}
+
+/* ===== Tracking card ===== */
+.tracking-section{position:relative;margin-top:-72px;z-index:5;padding-bottom:40px;}
+.tracking-card{
+  background:#fff;border-radius:22px;box-shadow:var(--shadow-lg);
+  border:1px solid var(--steel-200);
+  padding:38px 40px;display:grid;grid-template-columns:.9fr 1.1fr;gap:36px;
+}
+.tracking-left h3{font-size:23px;margin-bottom:8px;}
+.tracking-left p{color:#5b6479;font-size:14.5px;margin-bottom:22px;max-width:340px;}
+.track-form{display:flex;gap:10px;flex-wrap:wrap;}
+.track-form input{
+  flex:1;min-width:200px;padding:14px 16px;border-radius:10px;border:1.5px solid var(--steel-200);
+  font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.03em;color:var(--navy);
+  transition:border-color .2s;
+}
+.track-form input:focus{border-color:var(--blue);outline:none;}
+.track-form input::placeholder{color:var(--steel-500);}
+.track-hint{margin-top:12px;font-size:12.5px;color:var(--steel-500);}
+.track-hint b{color:var(--blue);cursor:pointer;text-decoration:underline;}
+
+.timeline{position:relative;padding-left:6px;}
+.timeline-track{position:relative;display:flex;justify-content:space-between;margin-bottom:14px;}
+.timeline-track::before{
+  content:"";position:absolute;top:9px;left:14px;right:14px;height:2px;
+  background:var(--steel-200);
+}
+.timeline-track .fill-line{
+  position:absolute;top:9px;left:14px;height:2px;background:var(--blue);
+  width:0%;transition:width 1.4s var(--ease);
+}
+.tl-step{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;flex:1;}
+.tl-dot{
+  width:20px;height:20px;border-radius:50%;background:#fff;border:2.5px solid var(--steel-300);
+  display:flex;align-items:center;justify-content:center;transition:all .4s var(--ease);
+}
+.tl-dot::after{content:"";width:7px;height:7px;border-radius:50%;background:transparent;transition:.3s;}
+.tl-step.active .tl-dot{border-color:var(--blue);}
+.tl-step.active .tl-dot::after{background:var(--blue);}
+.tl-step.done .tl-dot{border-color:var(--blue);background:var(--blue);}
+.tl-step.done .tl-dot::after{background:#fff;width:6px;height:6px;}
+.tl-label{font-size:11px;text-align:center;margin-top:10px;color:var(--steel-500);font-weight:600;max-width:80px;}
+.tl-step.active .tl-label, .tl-step.done .tl-label{color:var(--navy);}
+.timeline-meta{
+  margin-top:20px;background:var(--steel-100);border-radius:12px;padding:16px 18px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+}
+.timeline-meta .tm-item span{display:block;font-size:11px;color:var(--steel-500);margin-bottom:3px;}
+.timeline-meta .tm-item strong{font-size:14px;color:var(--navy);font-family:'IBM Plex Mono',monospace;}
+
+
+.tracking-detail{margin-top:22px;border-top:1px solid var(--steel-200);padding-top:22px;display:none;}
+.tracking-detail.visible{display:block;}
+.tracking-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:20px;}
+.summary-card{background:#fff;border:1px solid var(--steel-200);border-radius:12px;padding:14px 16px;}
+.summary-card span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--steel-500);margin-bottom:5px;}
+.summary-card strong{font-size:13.5px;color:var(--navy);word-break:break-word;}
+.event-history{display:grid;gap:0;}
+.event-history h4{font-size:15px;margin:0 0 12px;}
+.event-item{display:grid;grid-template-columns:18px 1fr;gap:12px;position:relative;padding-bottom:18px;}
+.event-marker{width:12px;height:12px;border-radius:50%;background:var(--blue);margin-top:5px;box-shadow:0 0 0 4px rgba(47,111,237,.11);position:relative;z-index:2;}
+.event-item:not(:last-child) .event-marker::after{content:"";position:absolute;top:12px;left:5px;width:2px;height:calc(100% + 12px);background:var(--steel-200);}
+.event-content strong{display:block;font-size:13.5px;color:var(--navy);margin-bottom:3px;}
+.event-content .event-meta{font-size:11.5px;color:var(--steel-500);margin-bottom:3px;}
+.event-content p{font-size:12.5px;color:#5b6479;line-height:1.5;margin:0;}
+.tracking-error{color:#b42318!important;}
+.track-form button[disabled]{opacity:.65;cursor:not-allowed;transform:none;}
+@media(max-width:640px){.tracking-summary{grid-template-columns:1fr}.timeline-meta{display:grid;grid-template-columns:1fr 1fr}.timeline-track{overflow-x:auto;gap:0}.tl-step{min-width:72px}}
+
+/* ===== Stats ===== */
+.stats{background:var(--navy);padding:70px 0;position:relative;overflow:hidden;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative;z-index:2;}
+.stat-item{text-align:center;border-right:1px solid rgba(255,255,255,.08);padding:0 12px;}
+.stat-item:last-child{border-right:none;}
+.stat-item strong{
+  font-family:'Space Grotesk',sans-serif;font-size:clamp(34px,4vw,46px);color:#fff;display:block;
+  font-weight:700;
+}
+.stat-item span{font-size:13px;color:var(--steel-300);letter-spacing:.02em;}
+
+/* ===== Section generic ===== */
+section{padding:110px 0;}
+@media (max-width:900px){section{padding:80px 0;}}
+.section-head{max-width:640px;margin-bottom:56px;}
+.section-head h2{font-size:clamp(28px,3.4vw,42px);margin-top:14px;font-weight:700;}
+.section-head p{color:#5b6479;font-size:16px;margin-top:14px;line-height:1.6;}
+.section-head.center{margin-left:auto;margin-right:auto;text-align:center;}
+
+/* ===== Services ===== */
+.services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
+.service-card{
+  background:var(--steel-100);border-radius:18px;padding:32px 26px;
+  border:1px solid transparent;
+  transition:all .35s var(--ease);position:relative;overflow:hidden;
+}
+.service-card:hover{
+  background:var(--navy);transform:translateY(-6px);
+  box-shadow:var(--shadow-lg);
+}
+.service-icon{
+  width:52px;height:52px;border-radius:12px;background:var(--white);
+  display:flex;align-items:center;justify-content:center;margin-bottom:22px;
+  box-shadow:var(--shadow-md);transition:.35s;
+}
+.service-card:hover .service-icon{background:var(--blue);}
+.service-icon svg{width:26px;height:26px;stroke:var(--blue);transition:.35s;}
+.service-card:hover .service-icon svg{stroke:#fff;}
+.service-card h3{font-size:18px;margin-bottom:10px;transition:.35s;}
+.service-card:hover h3{color:#fff;}
+.service-card p{font-size:14px;color:#5b6479;line-height:1.6;margin-bottom:22px;transition:.35s;}
+.service-card:hover p{color:var(--steel-300);}
+.service-link{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--blue);transition:.35s;}
+.service-card:hover .service-link{color:var(--blue-bright);}
+.service-link svg{width:14px;height:14px;transition:transform .3s var(--ease);}
+.service-card:hover .service-link svg{transform:translateX(4px);}
+
+/* ===== How it works ===== */
+.how-wrap{position:relative;}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+.how-line{
+  position:absolute;top:38px;left:8%;right:8%;height:2px;
+  background:repeating-linear-gradient(90deg, var(--steel-300) 0 8px, transparent 8px 16px);
+}
+.how-step{position:relative;padding:0 20px;text-align:left;}
+.how-num{
+  font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--blue);font-weight:600;
+  width:76px;height:76px;border-radius:50%;background:#fff;border:2px solid var(--steel-200);
+  display:flex;align-items:center;justify-content:center;margin-bottom:22px;position:relative;z-index:2;
+  transition:.3s;
+}
+.how-step:hover .how-num{border-color:var(--blue);box-shadow:0 0 0 6px rgba(47,111,237,.12);}
+.how-step h3{font-size:17.5px;margin-bottom:8px;}
+.how-step p{font-size:13.5px;color:#5b6479;line-height:1.6;}
+
+/* ===== About split ===== */
+.about-section{background:var(--steel-100);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.about-visual{position:relative;border-radius:22px;overflow:hidden;height:440px;background:var(--navy);}
+.about-list{margin-top:26px;display:flex;flex-direction:column;gap:16px;}
+.about-list li{display:flex;gap:14px;align-items:flex-start;font-size:14.5px;color:#37405a;}
+.about-list .chk{
+  width:22px;height:22px;border-radius:50%;background:var(--blue);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;margin-top:1px;
+}
+.about-list .chk svg{width:12px;height:12px;stroke:#fff;}
+.about-visual .grid-overlay{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size:40px 40px;
+}
+.about-badge{
+  position:absolute;bottom:24px;left:24px;right:24px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(12px);border-radius:14px;padding:18px 20px;color:#fff;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.about-badge strong{font-family:'Space Grotesk',sans-serif;font-size:26px;}
+.about-badge span{font-size:11.5px;color:var(--steel-300);display:block;}
+
+/* ===== Global delivery ===== */
+.global-section{background:var(--navy-deep);color:#fff;position:relative;overflow:hidden;}
+.global-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:50px;align-items:center;}
+.global-section .section-head p{color:var(--steel-300);}
+.global-section .eyebrow{color:var(--blue-bright);}
+.route-list{display:flex;flex-direction:column;gap:0;margin-top:30px;}
+.route-row{
+  display:flex;justify-content:space-between;align-items:center;padding:15px 0;
+  border-bottom:1px solid rgba(255,255,255,.08);font-size:14px;
+}
+.route-row .rr-path{display:flex;align-items:center;gap:10px;color:#fff;font-weight:500;}
+.route-row .rr-path svg{width:15px;height:15px;stroke:var(--blue-bright);}
+.route-row .rr-time{font-family:'IBM Plex Mono',monospace;color:var(--steel-300);font-size:12.5px;}
+.map-wrap{position:relative;height:420px;}
+.map-svg{width:100%;height:100%;}
+.map-dot{animation:pulse 3s ease-in-out infinite;}
+
+/* ===== Testimonials ===== */
+.testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.testimonial-card{
+  background:#fff;border:1px solid var(--steel-200);border-radius:18px;padding:30px;
+  box-shadow:var(--shadow-md);
+}
+.stars{display:flex;gap:3px;margin-bottom:18px;}
+.stars svg{width:15px;height:15px;fill:#f5b942;stroke:none;}
+.testimonial-card p{font-size:14.5px;color:#37405a;line-height:1.7;margin-bottom:24px;}
+.t-author{display:flex;align-items:center;gap:12px;}
+.t-avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--navy),var(--blue));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;
+  font-family:'Space Grotesk',sans-serif;
+}
+.t-author strong{display:block;font-size:14px;color:var(--navy);}
+.t-author span{font-size:12.5px;color:var(--steel-500);}
+
+/* ===== CTA banner ===== */
+.cta-banner{
+  background:linear-gradient(120deg,var(--navy) 0%,#173166 60%,var(--navy) 100%);
+  border-radius:28px;padding:64px 60px;color:#fff;position:relative;overflow:hidden;
+  display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap;
+}
+.cta-banner::before{
+  content:"";position:absolute;top:-60%;right:-10%;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle, rgba(79,139,255,.25), transparent 70%);
+}
+.cta-banner h2{color:#fff;font-size:clamp(26px,3vw,36px);max-width:520px;position:relative;z-index:2;}
+.cta-actions{display:flex;gap:14px;position:relative;z-index:2;flex-wrap:wrap;}
+
+/* ===== Footer ===== */
+footer{background:var(--navy-deep);color:var(--steel-300);padding:80px 0 30px;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1.1fr;gap:36px;margin-bottom:60px;}
+.footer-brand .brand{margin-bottom:16px;}
+.footer-brand p{font-size:13.5px;color:var(--steel-500);max-width:260px;line-height:1.7;margin-bottom:20px;}
+.footer-col h4{color:#fff;font-size:13.5px;margin-bottom:18px;letter-spacing:.03em;}
+.footer-col ul{display:flex;flex-direction:column;gap:11px;}
+.footer-col a{font-size:13.5px;color:var(--steel-500);transition:.25s;}
+.footer-col a:hover{color:#fff;}
+.social-row{display:flex;gap:10px;margin-top:18px;}
+.social-row a{
+  width:36px;height:36px;border-radius:8px;border:1px solid rgba(255,255,255,.14);
+  display:flex;align-items:center;justify-content:center;transition:.25s;
+}
+.social-row a:hover{background:var(--blue);border-color:var(--blue);}
+.social-row svg{width:16px;height:16px;stroke:var(--steel-300);}
+.social-row a:hover svg{stroke:#fff;}
+.whatsapp-cta{
+  display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.14);padding:10px 16px;border-radius:10px;font-size:13px;margin-top:10px;
+  transition:.25s;
+}
+.whatsapp-cta:hover{background:#22c55e;border-color:#22c55e;color:#fff;}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.08);padding-top:26px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
+  font-size:12.5px;color:var(--steel-500);
+}
+.footer-legal{display:flex;gap:20px;}
+.footer-legal a:hover{color:#fff;}
+.dev-credit{
+  text-align:center;padding-bottom:18px;
+  font-size:11.5px;letter-spacing:.02em;color:var(--steel-500);opacity:.7;
+}
+.dev-credit a{color:var(--steel-500);transition:color .25s;}
+.dev-credit a:hover{color:var(--steel-300);}
+
+/* animations on scroll */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease), transform .8s var(--ease);}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* ===== Responsive ===== */
+@media (max-width:1080px){
+  .services-grid{grid-template-columns:repeat(2,1fr);}
+  .how-grid{grid-template-columns:repeat(2,1fr);row-gap:40px;}
+  .how-line{display:none;}
+  .testimonial-grid{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);row-gap:30px;}
+  .stat-item:nth-child(2){border-right:none;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:900px){
+  nav.primary-nav{display:none;}
+  .header-actions .btn-ghost{display:none;}
+  .menu-toggle{display:flex;}
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-visual{height:360px;order:-1;margin-bottom:10px;}
+  .tracking-card{grid-template-columns:1fr;}
+  .about-grid{grid-template-columns:1fr;}
+  .about-visual{height:320px;}
+  .global-grid{grid-template-columns:1fr;}
+  .map-wrap{height:300px;}
+}
+@media (max-width:640px){
+  .hero{padding:140px 0 90px;}
+  .services-grid{grid-template-columns:1fr;}
+  .how-grid{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:30px 20px;}
+  .cta-banner{padding:44px 26px;flex-direction:column;align-items:flex-start;}
+  .tracking-card{padding:26px 22px;}
+  .timeline-track{padding:0 4px;}
+  .tl-label{font-size:9.5px;max-width:58px;}
+}
+</style>
+
+<style>
+.quote-form input,.quote-form select,.quote-form textarea{width:100%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;padding:12px 13px;font:inherit;outline:none;}
+.quote-form input::placeholder,.quote-form textarea::placeholder{color:rgba(255,255,255,.52);}
+.quote-form select option{color:#111;}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.form-grid textarea{grid-column:1/-1;resize:vertical;}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr}.form-grid textarea{grid-column:auto}}
+</style>
+</head>
+<body>
+<!-- ===== Header ===== -->
+<header id="siteHeader">
+<div class="container nav-wrap">
+<a class="brand" href="#top">
+<img alt="Starling Courier Service logo" src="starling-courier-logo.svg"/>
+<span class="brand-text"><strong>STARLING</strong><span>COURIER SERVICES</span></span>
+</a>
+<nav aria-label="Primary" class="primary-nav">
+<a href="#top">Home</a>
+<a href="#about">About</a>
+<a href="#services">Services</a>
+<a href="#tracking">Tracking</a>
+<a href="#quote">Get a Quote</a>
+<a href="#contact">Contact</a>
+</nav>
+<div class="header-actions">
+<a class="btn btn-ghost" href="#tracking">Track Shipment</a>
+<a class="btn btn-primary" href="#quote">Book a Shipment</a>
+<button aria-controls="mobileNav" aria-expanded="false" aria-label="Open menu" class="menu-toggle" id="menuToggle">
+<span></span><span></span><span></span>
+</button>
+</div>
+</div>
+</header>
+<!-- ===== Mobile nav ===== -->
+<div class="mobile-nav" id="mobileNav">
+<div class="mobile-nav-top">
+<a class="brand" href="#top">
+<img alt="Starling Courier Service logo" src="starling-courier-logo.svg" style="height:34px;"/>
+</a>
+<button aria-label="Close menu" class="menu-toggle" id="menuClose"><span style="transform:rotate(45deg) translate(2px,2px);"></span><span style="opacity:0;"></span><span style="transform:rotate(-45deg) translate(2px,-2px);"></span></button>
+</div>
+<a href="#top">Home</a>
+<a href="#about">About</a>
+<a href="#services">Services</a>
+<a href="#tracking">Tracking</a>
+<a href="#quote">Get a Quote</a>
+<a href="#contact">Contact</a>
+<a class="btn btn-primary" href="#quote">Book a Shipment</a>
+</div>
+<main id="top">
+<!-- ===== Hero ===== -->
+<section class="hero" style="padding-top:168px;">
+<div class="container hero-grid">
+<div>
+<span class="eyebrow">Global Courier &amp; Logistics Network</span>
+<h1>Delivering Your World.<br/><em>Securely. Reliably.</em> On Time.</h1>
+<p class="lede">Starling Courier Service moves parcels, freight, and documents across town or across borders — with real-time tracking, secure handling, and a delivery network built on precision.</p>
+<div class="hero-ctas">
+<a class="btn btn-primary" href="#quote">Book a Shipment</a>
+<a class="btn btn-ghost" href="#tracking">Track Shipment</a>
+</div>
+<div class="hero-proof">
+<div><strong>Live</strong><span>Shipment Data</span></div>
+<div><strong>Live</strong><span>Tracking Status</span></div>
+<div><strong>24/7</strong><span>Live Tracking</span></div>
+</div>
+</div>
+<div aria-hidden="true" class="hero-visual">
+<svg class="orbit-svg" fill="none" viewbox="0 0 480 480">
+<defs>
+<lineargradient id="routeGrad" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#4f8bff"></stop>
+<stop offset="100%" stop-color="#8fb6ff"></stop>
+</lineargradient>
+<radialgradient cx="35%" cy="30%" id="globeGrad" r="70%">
+<stop offset="0%" stop-color="#22407f"></stop>
+<stop offset="60%" stop-color="#122653"></stop>
+<stop offset="100%" stop-color="#0a1730"></stop>
+</radialgradient>
+</defs>
+<g class="globe-core">
+<circle cx="240" cy="230" fill="url(#globeGrad)" r="128" stroke="rgba(255,255,255,.14)" stroke-width="1"></circle>
+<ellipse cx="240" cy="230" fill="none" rx="128" ry="42" stroke="rgba(255,255,255,.14)" stroke-width="1"></ellipse>
+<ellipse cx="240" cy="230" fill="none" rx="128" ry="42" stroke="rgba(255,255,255,.1)" stroke-width="1" transform="rotate(60 240 230)"></ellipse>
+<ellipse cx="240" cy="230" fill="none" rx="128" ry="42" stroke="rgba(255,255,255,.1)" stroke-width="1" transform="rotate(120 240 230)"></ellipse>
+<circle cx="240" cy="230" fill="none" r="128" stroke="rgba(255,255,255,.14)" stroke-width="1"></circle>
+</g>
+<path class="route-path" d="M 90 330 C 160 260, 200 210, 260 190 S 380 140, 420 90"></path>
+<path class="route-path" d="M 70 150 C 130 180, 180 230, 250 250 S 360 300, 410 340" style="animation-delay:-6s;"></path>
+<circle class="pulse-dot" cx="90" cy="330" fill="#4f8bff" r="4"></circle>
+<circle class="pulse-dot" cx="420" cy="90" fill="#7ee0a6" r="4" style="animation-delay:-1s;"></circle>
+<circle class="pulse-dot" cx="410" cy="340" fill="#f5b942" r="4" style="animation-delay:-2s;"></circle>
+<circle class="pulse-dot" cx="70" cy="150" fill="#4f8bff" r="4" style="animation-delay:-1.5s;"></circle>
+</svg>
+<div class="parcel-card"><div class="pc-top"><span>LIVE TRACKING</span><div class="pc-status"><i></i>Connected</div></div><h4>Shipment status</h4><p>Enter a tracking number below to view live shipment data.</p></div>
+</div>
+</div>
+</section>
+<!-- ===== Tracking Card ===== -->
+<section class="tracking-section" id="tracking">
+<div class="container">
+<div class="tracking-card reveal">
+<div class="tracking-left">
+<span class="eyebrow">Live Tracking</span>
+<h3 style="margin-top:12px;">Track Your Shipment</h3>
+<p>Enter your tracking number to see real-time status, from pickup to final delivery.</p>
+<form class="track-form" id="trackForm">
+<input aria-label="Tracking number" id="trackInput" placeholder="Enter tracking number" type="text"/>
+<button class="btn btn-dark" type="submit">Track Shipment</button>
+</form>
+<p aria-live="polite" class="track-hint" id="trackMessage">Enter a valid Starling tracking number to view shipment status.</p>
+</div>
+<div class="timeline">
+<div class="timeline-track">
+<div class="fill-line" id="fillLine"></div>
+<div class="tl-step" data-step="0"><div class="tl-dot"></div><span class="tl-label">Shipment Created</span></div>
+<div class="tl-step" data-step="1"><div class="tl-dot"></div><span class="tl-label">Picked Up</span></div>
+<div class="tl-step" data-step="2"><div class="tl-dot"></div><span class="tl-label">In Transit</span></div>
+<div class="tl-step" data-step="3"><div class="tl-dot"></div><span class="tl-label">Out for Delivery</span></div>
+<div class="tl-step" data-step="4"><div class="tl-dot"></div><span class="tl-label">Delivered</span></div>
+</div>
+<div class="timeline-meta">
+<div class="tm-item"><span>Origin</span><strong id="originLabel">—</strong></div>
+<div class="tm-item"><span>Destination</span><strong id="destinationLabel">—</strong></div>
+<div class="tm-item"><span>Status</span><strong id="statusLabel">Awaiting tracking</strong></div>
+<div class="tm-item"><span>ETA</span><strong id="etaLabel">—</strong></div>
+</div>
+<div class="tracking-detail" id="trackingDetail" aria-live="polite">
+  <div class="tracking-summary">
+    <div class="summary-card"><span>Tracking number</span><strong id="trackingNumberLabel">—</strong></div>
+    <div class="summary-card"><span>Service</span><strong id="serviceTypeLabel">—</strong></div>
+    <div class="summary-card"><span>Last updated</span><strong id="updatedLabel">—</strong></div>
+  </div>
+  <div class="event-history"><h4>Shipment history</h4><div id="eventHistory"></div></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ===== Stats ===== -->
+<section class="stats">
+<div class="container stats-grid">
+<div class="stat-item"><strong data-static="Live">Live</strong><span>Shipment Data</span></div>
+<div class="stat-item"><strong data-static="Real-time">Real-time</strong><span>Status Updates</span></div>
+<div class="stat-item"><strong data-static="24/7">24/7</strong><span>Shipment Tracking</span></div>
+<div class="stat-item"><strong data-static="Global">Global</strong><span>Delivery Network</span></div>
+</div>
+</section>
+<!-- ===== Services ===== -->
+<section id="services">
+<div class="container">
+<div class="section-head reveal">
+<span class="eyebrow">What We Move</span>
+<h2>Logistics Solutions Built Around Your Shipment</h2>
+<p>From a single envelope to a full freight pallet, every service is backed by the same tracking, handling standards, and delivery discipline.</p>
+</div>
+<div class="services-grid">
+<div class="service-card reveal">
+<div class="service-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 010 18a14 14 0 010-18"></path></svg></div>
+<h3>International Shipping</h3>
+<p>Cross-border parcel and freight delivery with full customs support and door-to-door tracking.</p>
+<a class="service-link" href="#quote">Get a quote <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+</a></div>
+<div class="service-card reveal">
+<div class="service-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3 12l4-7h10l4 7M3 12v6a1 1 0 001 1h1a2 2 0 004 0h6a2 2 0 004 0h1a1 1 0 001-1v-6M3 12h18"></path></svg></div>
+<h3>Domestic Delivery</h3>
+<p>Reliable same-region and nationwide delivery, optimized for speed across every route.</p>
+<a class="service-link" href="#quote">Get a quote <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+</a></div>
+<div class="service-card reveal">
+<div class="service-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M2 16l6-2 4-8 3 1-3 7 5-1 4-6 2 1-3 6 2 3-14 2z"></path></svg></div>
+<h3>Air Freight</h3>
+<p>Priority air cargo for time-critical and high-value shipments moving internationally.</p>
+<a class="service-link" href="#quote">Get a quote <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+</a></div>
+<div class="service-card reveal">
+<div class="service-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"></path></svg></div>
+<h3>Express Delivery</h3>
+<p>Same-day and next-day delivery for shipments that can't wait, tracked minute by minute.</p>
+<a class="service-link" href="#quote">Get a quote <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+</a></div>
+</div>
+</div>
+</section>
+<!-- ===== How it works ===== -->
+<section class="how-wrap" style="background:var(--steel-100);">
+<div class="container">
+<div class="section-head reveal">
+<span class="eyebrow">The Process</span>
+<h2>From Pickup to Delivery, In Four Steps</h2>
+</div>
+<div class="how-grid">
+<div aria-hidden="true" class="how-line"></div>
+<div class="how-step reveal"><div class="how-num">01</div><h3>Book Your Shipment</h3><p>Submit pickup details online or by phone — parcel size, destination, and preferred timing.</p></div>
+<div class="how-step reveal"><div class="how-num">02</div><h3>We Pick It Up</h3><p>A Starling courier collects your shipment and logs it into the tracking network on the spot.</p></div>
+<div class="how-step reveal"><div class="how-num">03</div><h3>Track Your Package</h3><p>Follow real-time status updates from transit hub to transit hub until it's on the final leg.</p></div>
+<div class="how-step reveal"><div class="how-num">04</div><h3>Receive Your Delivery</h3><p>Your parcel arrives safely, with confirmation and proof of delivery sent directly to you.</p></div>
+</div>
+</div>
+</section>
+<!-- ===== About ===== -->
+<section class="about-section" id="about">
+<div class="container about-grid">
+<div class="reveal">
+<span class="eyebrow">About Starling</span>
+<h2 style="font-size:clamp(26px,3.2vw,38px);margin:14px 0 16px;">A Courier Network Built on Trust and Precision</h2>
+<p style="color:#5b6479;font-size:15.5px;line-height:1.7;max-width:480px;">Starling Courier Service was built to bring technology-grade reliability to courier logistics — secure handling, transparent tracking, and a team that treats every parcel like it matters, because it does.</p>
+<ul class="about-list">
+<li><span class="chk"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg></span>Secure handling at every checkpoint, from pickup to final mile</li>
+<li><span class="chk"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg></span>Timely delivery, backed by route optimization and live monitoring</li>
+<li><span class="chk"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg></span>Professional customer service, available around the clock</li>
+<li><span class="chk"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg></span>Domestic reach with full international shipping capability</li>
+</ul>
+</div>
+<div class="about-visual reveal">
+<div class="grid-overlay"></div>
+<svg fill="none" style="position:absolute;inset:0;width:100%;height:100%;" viewbox="0 0 400 440">
+<path d="M40 380 C 100 300, 140 240, 200 220 S 320 160, 360 60" opacity=".7" stroke="#4f8bff" stroke-dasharray="6 8" stroke-width="1.6"></path>
+<circle cx="40" cy="380" fill="#4f8bff" r="5"></circle>
+<circle cx="360" cy="60" fill="#7ee0a6" r="5"></circle>
+<circle class="map-dot" cx="200" cy="220" fill="#f5b942" r="4"></circle>
+</svg>
+<div class="about-badge">
+<div><strong>15+</strong><span>Years Combined Team Experience</span></div>
+<div style="text-align:right;"><strong>250+</strong><span>Routes Served Monthly</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- ===== Global delivery ===== -->
+<section class="global-section">
+<div class="container global-grid">
+<div class="reveal">
+<span class="eyebrow">International Reach</span>
+<h2 style="font-size:clamp(26px,3.2vw,38px);margin:14px 0 16px;color:#fff;">Delivering Across Borders</h2>
+<p style="max-width:440px;font-size:15.5px;line-height:1.7;">Our international network connects Starling's domestic routes to major hubs worldwide, with full customs handling and end-to-end tracking on every leg.</p>
+<div class="route-list">
+<div class="route-row"><div class="rr-path"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M2 16l20-8-8 20-3-9-9-3z"></path></svg>Banjul → Dakar</div><div class="rr-time">Route</div></div>
+<div class="route-row"><div class="rr-path"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M2 16l20-8-8 20-3-9-9-3z"></path></svg>Banjul → Accra</div><div class="rr-time">Route</div></div>
+<div class="route-row"><div class="rr-path"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M2 16l20-8-8 20-3-9-9-3z"></path></svg>Banjul → London</div><div class="rr-time">Route</div></div>
+<div class="route-row"><div class="rr-path"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M2 16l20-8-8 20-3-9-9-3z"></path></svg>Banjul → New York</div><div class="rr-time">Route</div></div>
+</div>
+</div>
+<div class="map-wrap reveal">
+<svg class="map-svg" fill="none" viewbox="0 0 480 420">
+<g opacity=".5">
+<circle cx="60" cy="60" fill="#3a5691" r="1.4"></circle><circle cx="100" cy="90" fill="#3a5691" r="1.4"></circle><circle cx="140" cy="70" fill="#3a5691" r="1.4"></circle>
+<circle cx="200" cy="110" fill="#3a5691" r="1.4"></circle><circle cx="260" cy="80" fill="#3a5691" r="1.4"></circle><circle cx="320" cy="120" fill="#3a5691" r="1.4"></circle>
+<circle cx="380" cy="90" fill="#3a5691" r="1.4"></circle><circle cx="80" cy="180" fill="#3a5691" r="1.4"></circle><circle cx="150" cy="200" fill="#3a5691" r="1.4"></circle>
+<circle cx="230" cy="220" fill="#3a5691" r="1.4"></circle><circle cx="300" cy="190" fill="#3a5691" r="1.4"></circle><circle cx="360" cy="230" fill="#3a5691" r="1.4"></circle>
+<circle cx="120" cy="290" fill="#3a5691" r="1.4"></circle><circle cx="200" cy="310" fill="#3a5691" r="1.4"></circle><circle cx="270" cy="300" fill="#3a5691" r="1.4"></circle>
+<circle cx="340" cy="320" fill="#3a5691" r="1.4"></circle><circle cx="90" cy="350" fill="#3a5691" r="1.4"></circle><circle cx="180" cy="370" fill="#3a5691" r="1.4"></circle>
+</g>
+<path d="M110 300 C 150 250, 200 200, 250 170 S 340 110, 400 70" opacity=".8" stroke="#4f8bff" stroke-dasharray="5 7" stroke-width="1.4"></path>
+<path d="M110 300 C 160 320, 220 300, 270 260 S 350 200, 390 260" opacity=".5" stroke="#4f8bff" stroke-dasharray="5 7" stroke-width="1.4"></path>
+<circle class="map-dot" cx="110" cy="300" fill="#4f8bff" r="5"></circle>
+<circle class="map-dot" cx="400" cy="70" fill="#7ee0a6" r="5" style="animation-delay:-1s;"></circle>
+<circle class="map-dot" cx="390" cy="260" fill="#f5b942" r="5" style="animation-delay:-2s;"></circle>
+</svg>
+</div>
+</div>
+</section>
+<!-- ===== CTA banner ===== -->
+<section id="quote" style="padding-top:0;">
+<div class="container">
+<div class="cta-banner reveal" style="display:block;">
+<h2>Request a Shipment Quote</h2>
+<p style="max-width:650px;margin:12px 0 24px;color:rgba(255,255,255,.72);">Tell us where your shipment is going and what you are sending. Our team can review the request and respond with the next steps.</p>
+<form class="quote-form" id="quoteForm">
+<div class="form-grid">
+<input name="name" required placeholder="Full name" autocomplete="name"/>
+<input name="email" required type="email" placeholder="Email address" autocomplete="email"/>
+<input name="phone" placeholder="Phone number" autocomplete="tel"/>
+<select name="serviceType" required><option value="">Service type</option><option>Domestic Delivery</option><option>International Shipping</option><option>Air Freight</option><option>Express Delivery</option></select>
+<input name="origin" required placeholder="Pickup location"/>
+<input name="destination" required placeholder="Destination"/>
+<input name="weightKg" type="number" min="0.01" step="0.01" placeholder="Weight (kg)"/>
+<textarea name="packageDescription" rows="3" placeholder="Package description"></textarea>
+</div>
+<div class="cta-actions" style="margin-top:18px;"><button class="btn btn-primary" type="submit">Submit Quote Request</button><a class="btn btn-ghost" href="#tracking">Track Shipment</a></div>
+<p aria-live="polite" id="quoteMessage" style="margin:14px 0 0;color:rgba(255,255,255,.78);"></p>
+</form>
+</div>
+</div>
+</section>
+</main>
+<!-- ===== Footer ===== -->
+<footer id="contact">
+<div class="container">
+<div class="footer-grid">
+<div class="footer-brand">
+<a class="brand" href="#top">
+<img alt="Starling Courier Service logo" src="starling-courier-logo.svg" style="height:38px;"/>
+<span class="brand-text"><strong style="color:#fff;">STARLING</strong><span>COURIER SERVICES</span></span>
+</a>
+<p>Fast, secure, and reliable domestic and international courier and logistics solutions.</p>
+
+
+</div>
+<div class="footer-col">
+<h4>Navigation</h4>
+<ul><li><a href="#top">Home</a></li><li><a href="#about">About</a></li><li><a href="#services">Services</a></li><li><a href="#quote">Get a Quote</a></li></ul>
+</div>
+<div class="footer-col">
+<h4>Services</h4>
+<ul><li><a href="#services">International Shipping</a></li><li><a href="#services">Domestic Delivery</a></li><li><a href="#services">Air Freight</a></li><li><a href="#services">Express Delivery</a></li></ul>
+</div>
+<div class="footer-col">
+<h4>Tracking</h4>
+<ul><li><a href="#tracking">Track a Shipment</a></li><li><a href="#tracking">Shipment Status Guide</a></li><li><a href="#contact">Delivery Support</a></li></ul>
+</div>
+<div class="footer-col">
+<h4>Contact</h4>
+<ul>
+
+
+<li><a href="#">Banjul, The Gambia</a></li>
+</ul>
+</div>
+</div>
+<div class="dev-credit">Designed &amp; Developed by Royal FinTech Company</div>
+<div class="footer-bottom">
+<span>© 2026 Starling Courier Service. All rights reserved.</span>
+<div class="footer-legal">
+
+
+
+</div>
+</div>
+</div>
+</footer>
+<script>
+// Header scroll state
+const header = document.getElementById('siteHeader');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 40);
+}, {passive:true});
+
+// Mobile nav
+const mobileNav = document.getElementById('mobileNav');
+const menuToggle = document.getElementById('menuToggle');
+const menuClose = document.getElementById('menuClose');
+function openMenu(){mobileNav.classList.add('open'); menuToggle.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden';}
+function closeMenu(){mobileNav.classList.remove('open'); menuToggle.setAttribute('aria-expanded','false'); document.body.style.overflow='';}
+menuToggle.addEventListener('click', openMenu);
+menuClose.addEventListener('click', closeMenu);
+mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+// Reveal on scroll
+const revealEls = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
+}, {threshold:0.15});
+revealEls.forEach(el => revealObserver.observe(el));
+
+// Live tracking API
+const tlSteps = document.querySelectorAll('.tl-step');
+const fillLine = document.getElementById('fillLine');
+const statusLabel = document.getElementById('statusLabel');
+const trackForm = document.getElementById('trackForm');
+const trackInput = document.getElementById('trackInput');
+const trackMessage = document.getElementById('trackMessage');
+const originLabel = document.getElementById('originLabel');
+const destinationLabel = document.getElementById('destinationLabel');
+const etaLabel = document.getElementById('etaLabel');
+const trackingDetail = document.getElementById('trackingDetail');
+const trackingNumberLabel = document.getElementById('trackingNumberLabel');
+const serviceTypeLabel = document.getElementById('serviceTypeLabel');
+const updatedLabel = document.getElementById('updatedLabel');
+const eventHistory = document.getElementById('eventHistory');
+const trackButton = trackForm.querySelector('button[type="submit"]');
+const apiBase = window.STARLING_API_BASE || window.location.origin;
+
+const quoteForm = document.getElementById('quoteForm');
+const quoteMessage = document.getElementById('quoteMessage');
+if (quoteForm) {
+  quoteForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    quoteMessage.textContent = 'Submitting your quote request…';
+    const form = new FormData(quoteForm);
+    const payload = Object.fromEntries(form.entries());
+    try {
+      const response = await fetch(`${apiBase}/api/quotes`, {
+        method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Unable to submit quote request.');
+      quoteForm.reset();
+      quoteMessage.textContent = `Quote request received. Reference: ${data.quoteRequest.id}`;
+    } catch (error) {
+      quoteMessage.textContent = error.message || 'Unable to submit quote request.';
+    }
+  });
+}
+
+const statusOrder = ['created','picked_up','in_transit','out_for_delivery','delivered'];
+const statusNames = {
+  created: 'Shipment Created',
+  picked_up: 'Picked Up',
+  in_transit: 'In Transit',
+  out_for_delivery: 'Out for Delivery',
+  delivered: 'Delivered',
+  cancelled: 'Cancelled'
+};
+
+function setTimelineStep(activeIndex, status) {
+  tlSteps.forEach((step, i) => {
+    step.classList.remove('active','done');
+    if (i < activeIndex) step.classList.add('done');
+    else if (i === activeIndex) step.classList.add('active');
+  });
+  fillLine.style.width = Math.max(0, Math.min(100, (activeIndex / (tlSteps.length - 1)) * 100)) + '%';
+  statusLabel.textContent = statusNames[status] || status || 'Unknown';
+}
+
+function formatDate(value) {
+  if (!value) return 'Not available';
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? 'Not available' : date.toLocaleString();
+}
+
+function renderEventHistory(events = []) {
+  eventHistory.replaceChildren();
+  if (!Array.isArray(events) || events.length === 0) {
+    const empty = document.createElement('p');
+    empty.textContent = 'No shipment events have been recorded yet.';
+    empty.style.color = '#5b6479';
+    eventHistory.appendChild(empty);
+    return;
+  }
+  [...events].reverse().forEach(event => {
+    const row = document.createElement('div'); row.className = 'event-item';
+    const marker = document.createElement('div'); marker.className = 'event-marker';
+    const content = document.createElement('div'); content.className = 'event-content';
+    const title = document.createElement('strong'); title.textContent = statusNames[event.status] || event.status || 'Shipment update';
+    const meta = document.createElement('div'); meta.className = 'event-meta';
+    meta.textContent = [event.location, formatDate(event.occurredAt)].filter(Boolean).join(' • ');
+    content.append(title, meta);
+    if (event.note) { const note = document.createElement('p'); note.textContent = event.note; content.appendChild(note); }
+    row.append(marker, content); eventHistory.appendChild(row);
+  });
+}
+
+function resetTracking() {
+  tlSteps.forEach(step => step.classList.remove('active','done'));
+  fillLine.style.width = '0%';
+  statusLabel.textContent = 'Awaiting tracking';
+  originLabel.textContent = '—';
+  destinationLabel.textContent = '—';
+  etaLabel.textContent = '—';
+  trackingNumberLabel.textContent = '—';
+  serviceTypeLabel.textContent = '—';
+  updatedLabel.textContent = '—';
+  eventHistory.replaceChildren();
+  trackingDetail.classList.remove('visible');
+  trackMessage.classList.remove('tracking-error');
+}
+resetTracking();
+
+trackForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const value = trackInput.value.trim().toUpperCase();
+  trackMessage.classList.remove('tracking-error');
+  if (!/^[A-Z0-9-]{4,40}$/.test(value)) {
+    trackMessage.textContent = 'Enter a valid tracking number.';
+    trackMessage.classList.add('tracking-error');
+    resetTracking();
+    return;
+  }
+
+  trackButton.disabled = true;
+  trackButton.textContent = 'Checking…';
+  trackMessage.textContent = 'Checking shipment status…';
+  try {
+    const response = await fetch(`${apiBase}/api/shipments/${encodeURIComponent(value)}`, { headers: { 'Accept': 'application/json' } });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Shipment could not be found.');
+
+    const shipment = data.shipment;
+    const statusIndex = statusOrder.indexOf(shipment.status);
+    setTimelineStep(statusIndex >= 0 ? statusIndex : 0, shipment.status);
+    if (shipment.status === 'cancelled') fillLine.style.width = '0%';
+    originLabel.textContent = [shipment.origin_city, shipment.origin_country].filter(Boolean).join(', ') || 'Not available';
+    destinationLabel.textContent = [shipment.destination_city, shipment.destination_country].filter(Boolean).join(', ') || 'Not available';
+    etaLabel.textContent = formatDate(shipment.estimated_delivery_at);
+    trackingNumberLabel.textContent = shipment.tracking_number || value;
+    serviceTypeLabel.textContent = shipment.service_type || 'Not specified';
+    updatedLabel.textContent = formatDate(shipment.updated_at);
+    renderEventHistory(shipment.events);
+    trackingDetail.classList.add('visible');
+    trackMessage.textContent = `Showing live tracking for ${shipment.tracking_number}`;
+    const url = new URL(window.location.href);
+    url.searchParams.set('tracking', shipment.tracking_number);
+    history.replaceState(null, '', url);
+  } catch (error) {
+    resetTracking();
+    trackMessage.textContent = error.message || 'Unable to retrieve shipment status.';
+    trackMessage.classList.add('tracking-error');
+  } finally {
+    trackButton.disabled = false;
+    trackButton.textContent = 'Track Shipment';
+  }
+});
+
+const trackingFromUrl = new URLSearchParams(window.location.search).get('tracking');
+if (trackingFromUrl) {
+  trackInput.value = trackingFromUrl.toUpperCase();
+  trackForm.requestSubmit();
+}
+
+</script>
+</body>
+</html>

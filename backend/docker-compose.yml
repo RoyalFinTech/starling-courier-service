@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: starling_courier
+      POSTGRES_USER: Starling
+      POSTGRES_PASSWORD: starling_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - starling_postgres_data:/var/lib/postgresql/data
+      - ./migrations/001_initial.sql:/docker-entrypoint-initdb.d/001_initial.sql:ro
+      - ./migrations/002_admin_and_operations.sql:/docker-entrypoint-initdb.d/002_admin_and_operations.sql:ro
+      - ./migrations/003_production_hardening.sql:/docker-entrypoint-initdb.d/003_production_hardening.sql:ro
+volumes:
+  starling_postgres_data:
