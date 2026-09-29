@@ -304,6 +304,25 @@ app.get('/api/admin/shipments', requireAuth, async (req,res)=>{
   res.json({shipments:rows,total:count.rows[0].total,limit,offset});
 });
 
+app.get('/api/admin/reports', requireAuth, async (_req,res)=>{
+  const [status, daily, inquiries, notifications] = await Promise.all([
+    query(`SELECT status, COUNT(*)::int AS count FROM shipments GROUP BY status ORDER BY count DESC`),
+    query(`WITH days AS (SELECT generate_series(current_date - interval '13 days', current_date, interval '1 day')::date AS day)
+      SELECT d.day,
+        COALESCE((SELECT COUNT(*)::int FROM shipments s WHERE s.created_at::date=d.day),0) AS shipments,
+        COALESCE((SELECT COUNT(*)::int FROM quote_requests q WHERE q.created_at::date=d.day),0) AS quotes,
+        COALESCE((SELECT COUNT(*)::int FROM contact_messages m WHERE m.created_at::date=d.day),0) AS messages
+      FROM days d ORDER BY d.day ASC`),
+    query(`SELECT (SELECT COUNT(*)::int FROM quote_requests WHERE status='new') AS new_quotes,
+      (SELECT COUNT(*)::int FROM contact_messages WHERE status='new') AS new_messages,
+      (SELECT COUNT(*)::int FROM shipments WHERE status='delivered') AS delivered,
+      (SELECT COUNT(*)::int FROM shipments WHERE status='in_transit') AS in_transit,
+      (SELECT COUNT(*)::int FROM shipments WHERE status='out_for_delivery') AS out_for_delivery`),
+    query(`SELECT status, COUNT(*)::int AS count FROM email_notifications GROUP BY status ORDER BY count DESC`)
+  ]);
+  res.json({generatedAt:new Date().toISOString(),shipmentStatus:status.rows,dailyActivity:daily.rows,summary:inquiries.rows[0],emailNotifications:notifications.rows});
+});
+
 app.get('/api/admin/audit-logs', requireAuth, async (req,res)=>{
   const limit=Math.min(Math.max(Number(req.query.limit)||30,1),100);
   const {rows}=await query(`SELECT a.*, u.email AS admin_email FROM audit_logs a LEFT JOIN admin_users u ON u.id=a.admin_user_id ORDER BY a.created_at DESC LIMIT $1`,[limit]);
