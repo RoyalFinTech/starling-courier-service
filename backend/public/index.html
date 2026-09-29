@@ -418,7 +418,7 @@ footer{background:var(--navy-deep);color:var(--steel-300);padding:80px 0 30px;}
 .footer-col h4{color:#fff;font-size:13.5px;margin-bottom:18px;letter-spacing:.03em;}
 .footer-col ul{display:flex;flex-direction:column;gap:11px;}
 .footer-col a{font-size:13.5px;color:var(--steel-500);transition:.25s;}
-.footer-col a:hover{color:#fff;}
+.footer-col a:hover{color:#fff;}.shield-icon{font-size:12px;margin-right:5px;}
 .social-row{display:flex;gap:10px;margin-top:18px;}
 .social-row a{
   width:36px;height:36px;border-radius:8px;border:1px solid rgba(255,255,255,.14);
@@ -493,6 +493,75 @@ footer{background:var(--navy-deep);color:var(--steel-300);padding:80px 0 30px;}
 .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
 .form-grid textarea{grid-column:1/-1;resize:vertical;}
 @media(max-width:680px){.form-grid{grid-template-columns:1fr}.form-grid textarea{grid-column:auto}}
+</style>
+<style>
+/* ===== Premium booking experience ===== */
+.booking-section{padding:110px 0 120px;background:
+  radial-gradient(80% 100% at 5% 0%,rgba(79,139,255,.16),transparent 60%),
+  radial-gradient(70% 90% at 95% 100%,rgba(20,40,90,.12),transparent 62%),
+  #f7f9fc;}
+.booking-intro{display:grid;grid-template-columns:1.25fr .75fr;gap:36px;align-items:end;margin-bottom:34px;}
+.booking-intro h2{font-size:clamp(32px,4vw,50px);line-height:1.05;margin:14px 0 16px;color:var(--navy);}
+.booking-intro p{max-width:650px;color:#5b6479;font-size:16px;line-height:1.7;}
+.booking-proof{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.booking-proof-item{background:rgba(255,255,255,.9);border:1px solid var(--steel-200);border-radius:14px;padding:14px 16px;box-shadow:0 10px 24px rgba(8,16,38,.06);}
+.booking-proof-item strong{display:block;color:var(--navy);font-size:13px;margin-bottom:3px;}
+.booking-proof-item span{font-size:11.5px;color:var(--steel-500);}
+.booking-card{background:#fff;border:1px solid #dfe5ee;border-radius:28px;box-shadow:0 30px 80px -30px rgba(8,16,38,.28);overflow:hidden;}
+.booking-card-top{padding:28px 34px;border-bottom:1px solid #e8ecf2;background:linear-gradient(180deg,#fff,#fbfcfe);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+.booking-card-top .mono{font-size:11px;letter-spacing:.12em;color:var(--steel-500);}
+.booking-secure{display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border-radius:999px;background:#eef7f1;color:#147443;font-size:11px;font-weight:700;}
+.booking-secure i{width:7px;height:7px;background:#24a365;border-radius:50%;box-shadow:0 0 0 4px rgba(36,163,101,.12);}
+.booking-form{padding:34px;}
+.booking-form-section{padding:26px 0;border-top:1px solid #edf0f4;}
+.booking-form-section:first-child{padding-top:0;border-top:0;}
+.booking-section-head{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;margin-bottom:20px;}
+.booking-step{width:44px;height:44px;border-radius:12px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;box-shadow:0 10px 20px rgba(8,16,38,.14);}
+.booking-section-head h3{font-size:18px;margin-bottom:4px;}
+.booking-section-head p{font-size:12.5px;color:var(--steel-500);}
+.booking-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+.form-field{display:block;}
+.form-field.full{grid-column:1/-1;}
+.form-field>span{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;font-weight:700;letter-spacing:.02em;color:#344054;margin-bottom:7px;}
+.form-field small{font-size:10.5px;font-weight:500;color:var(--steel-500);}
+.form-field input,.form-field select,.form-field textarea{
+  width:100%;border:1px solid #d8dee8;background:#fbfcfe;color:var(--ink);border-radius:12px;padding:13px 14px;font:inherit;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s,background .2s,transform .2s;
+}
+.form-field textarea{min-height:118px;resize:vertical;line-height:1.55;}
+.form-field input::placeholder,.form-field textarea::placeholder{color:#98a2b3;}
+.form-field select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#667085 50%),linear-gradient(135deg,#667085 50%,transparent 50%);background-position:calc(100% - 17px) 18px,calc(100% - 11px) 18px;background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-right:36px;}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(47,111,237,.10);}
+.form-field.invalid input,.form-field.invalid select,.form-field.invalid textarea{border-color:#e5484d;background:#fff8f8;box-shadow:0 0 0 3px rgba(229,72,77,.08);}
+.booking-actions{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:10px;padding-top:8px;}
+.booking-submit{min-width:210px;padding:14px 20px;border-radius:12px;}
+.booking-submit.is-loading{transform:none!important;}
+.booking-submit .spinner{width:15px;height:15px;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.booking-form-message{min-height:21px;margin-top:14px;font-size:12.5px;color:#667085;}
+.booking-form-message.error{color:#b42318;}
+.booking-note{font-size:11px;color:var(--steel-500);max-width:520px;line-height:1.6;}
+.booking-success{padding:38px 34px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;background:linear-gradient(135deg,#f5f8ff,#ffffff);}
+.booking-success.hidden{display:none;}
+.success-icon{width:48px;height:48px;border-radius:14px;background:#e9f8ef;color:#15803d;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;}
+.booking-success h3{font-size:20px;margin-bottom:5px;}
+.booking-success p{color:#667085;font-size:13px;line-height:1.6;}
+.booking-ref{display:inline-flex;margin-top:10px;padding:8px 10px;border-radius:8px;background:#eef2f7;color:var(--navy);font-family:'IBM Plex Mono',monospace;font-size:11px;word-break:break-all;}
+.success-actions{grid-column:2;display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;}
+.booking-card .btn-ghost{color:var(--navy);border-color:#ccd5e2;background:#fff;}
+.booking-card .btn-ghost:hover{border-color:var(--blue);color:var(--blue);background:#f8fbff;}
+@media(max-width:900px){.booking-intro{grid-template-columns:1fr}.booking-proof{max-width:520px}}
+@media(max-width:680px){
+  .booking-section{padding:82px 0 90px;}
+  .booking-card{border-radius:20px;}
+  .booking-card-top{padding:20px 20px;}
+  .booking-form{padding:22px 20px;}
+  .booking-form-grid{grid-template-columns:1fr;}
+  .form-field.full{grid-column:auto;}
+  .booking-actions{align-items:stretch;}
+  .booking-submit{width:100%;}
+  .booking-success{grid-template-columns:1fr;padding:28px 22px;}
+  .success-actions{grid-column:auto;}
+}
 </style>
 </head>
 <body>
@@ -648,25 +717,25 @@ footer{background:var(--navy-deep);color:var(--steel-300);padding:80px 0 30px;}
 <div class="service-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 010 18a14 14 0 010-18"></path></svg></div>
 <h3>International Shipping</h3>
 <p>Cross-border parcel and freight delivery with full customs support and door-to-door tracking.</p>
-<a class="service-link" href="#quote">Get a quote <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+<a class="service-link" href="#quote" data-service="International Shipping">Get a quote <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
 </a></div>
 <div class="service-card reveal">
 <div class="service-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3 12l4-7h10l4 7M3 12v6a1 1 0 001 1h1a2 2 0 004 0h6a2 2 0 004 0h1a1 1 0 001-1v-6M3 12h18"></path></svg></div>
 <h3>Domestic Delivery</h3>
 <p>Reliable same-region and nationwide delivery, optimized for speed across every route.</p>
-<a class="service-link" href="#quote">Get a quote <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+<a class="service-link" href="#quote" data-service="Domestic Delivery">Get a quote <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
 </a></div>
 <div class="service-card reveal">
 <div class="service-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M2 16l6-2 4-8 3 1-3 7 5-1 4-6 2 1-3 6 2 3-14 2z"></path></svg></div>
 <h3>Air Freight</h3>
 <p>Priority air cargo for time-critical and high-value shipments moving internationally.</p>
-<a class="service-link" href="#quote">Get a quote <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+<a class="service-link" href="#quote" data-service="Air Freight">Get a quote <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
 </a></div>
 <div class="service-card reveal">
 <div class="service-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"></path></svg></div>
 <h3>Express Delivery</h3>
 <p>Same-day and next-day delivery for shipments that can't wait, tracked minute by minute.</p>
-<a class="service-link" href="#quote">Get a quote <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+<a class="service-link" href="#quote" data-service="Express Delivery">Get a quote <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
 </a></div>
 </div>
 </div>
@@ -750,26 +819,78 @@ footer{background:var(--navy-deep);color:var(--steel-300);padding:80px 0 30px;}
 </div>
 </section>
 <!-- ===== CTA banner ===== -->
-<section id="quote" style="padding-top:0;">
+<section id="quote" class="booking-section">
 <div class="container">
-<div class="cta-banner reveal" style="display:block;">
-<h2>Request a Shipment Quote</h2>
-<p style="max-width:650px;margin:12px 0 24px;color:rgba(255,255,255,.72);">Tell us where your shipment is going and what you are sending. Our team can review the request and respond with the next steps.</p>
-<form class="quote-form" id="quoteForm">
-<div class="form-grid">
-<input name="name" required placeholder="Full name" autocomplete="name"/>
-<input name="email" required type="email" placeholder="Email address" autocomplete="email"/>
-<input name="phone" placeholder="Phone number" autocomplete="tel"/>
-<select name="serviceType" required><option value="">Service type</option><option>Domestic Delivery</option><option>International Shipping</option><option>Air Freight</option><option>Express Delivery</option></select>
-<input name="origin" required placeholder="Pickup location"/>
-<input name="destination" required placeholder="Destination"/>
-<input name="weightKg" type="number" min="0.01" step="0.01" placeholder="Weight (kg)"/>
-<textarea name="packageDescription" rows="3" placeholder="Package description"></textarea>
-</div>
-<div class="cta-actions" style="margin-top:18px;"><button class="btn btn-primary" type="submit">Submit Quote Request</button><a class="btn btn-ghost" href="#tracking">Track Shipment</a></div>
-<p aria-live="polite" id="quoteMessage" style="margin:14px 0 0;color:rgba(255,255,255,.78);"></p>
-</form>
-</div>
+  <div class="booking-intro reveal">
+    <div>
+      <span class="eyebrow">Book a Shipment</span>
+      <h2>Plan your delivery with confidence.</h2>
+      <p>Give Starling the essentials once. Our operations team receives the request directly and can follow up with the next step for your shipment.</p>
+    </div>
+    <div class="booking-proof" aria-label="Booking benefits">
+      <div class="booking-proof-item"><strong>One secure request</strong><span>All shipment essentials in one place.</span></div>
+      <div class="booking-proof-item"><strong>Direct to operations</strong><span>No mock checkout or dead-end buttons.</span></div>
+    </div>
+  </div>
+  <div class="booking-card reveal">
+    <div class="booking-card-top">
+      <span class="mono">STARLING / SHIPMENT REQUEST</span>
+      <span class="booking-secure"><i aria-hidden="true"></i> Connected to Starling operations</span>
+    </div>
+    <form class="booking-form" id="quoteForm" novalidate>
+      <div class="booking-form-section">
+        <div class="booking-section-head">
+          <div class="booking-step">01</div>
+          <div><h3>Your contact details</h3><p>Tell us who is booking the shipment.</p></div>
+        </div>
+        <div class="booking-form-grid">
+          <label class="form-field"><span>Full name <small>Required</small></span><input name="name" required placeholder="e.g. Amadou Jallow" autocomplete="name"></label>
+          <label class="form-field"><span>Phone number <small>Required</small></span><input name="phone" required placeholder="+220 3xx xxx" autocomplete="tel" inputmode="tel"></label>
+          <label class="form-field full"><span>Email address <small>Required</small></span><input name="email" required type="email" placeholder="you@example.com" autocomplete="email"></label>
+        </div>
+      </div>
+      <div class="booking-form-section">
+        <div class="booking-section-head">
+          <div class="booking-step">02</div>
+          <div><h3>Pickup &amp; destination</h3><p>Set the route for your parcel, document or freight.</p></div>
+        </div>
+        <div class="booking-form-grid">
+          <label class="form-field"><span>Pickup location <small>Required</small></span><input name="origin" required placeholder="City, area or pickup address" autocomplete="street-address"></label>
+          <label class="form-field"><span>Destination <small>Required</small></span><input name="destination" required placeholder="City, area or delivery address"></label>
+        </div>
+      </div>
+      <div class="booking-form-section">
+        <div class="booking-section-head">
+          <div class="booking-step">03</div>
+          <div><h3>Shipment details</h3><p>Choose the service and describe what you are sending.</p></div>
+        </div>
+        <div class="booking-form-grid">
+          <label class="form-field"><span>Service type <small>Required</small></span><select name="serviceType" required><option value="">Select a service</option><option>Domestic Delivery</option><option>International Shipping</option><option>Air Freight</option><option>Express Delivery</option></select></label>
+          <label class="form-field"><span>Approx. weight <small>Optional</small></span><input name="weightKg" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="e.g. 2.5"></label>
+          <label class="form-field full"><span>Package description <small>Optional</small></span><textarea name="packageDescription" rows="4" maxlength="3000" placeholder="What are you sending? Include useful details such as size, quantity, or handling needs."></textarea></label>
+        </div>
+      </div>
+      <div class="booking-actions">
+        <div>
+          <p class="booking-note">By submitting, you are sending this request directly to Starling Courier Service for operational follow-up. This is a quote request, not an automatic payment.</p>
+          <p aria-live="polite" id="quoteMessage" class="booking-form-message"></p>
+        </div>
+        <button class="btn btn-primary booking-submit" id="submitQuoteButton" type="submit"><span>Submit booking request</span><span aria-hidden="true">→</span></button>
+      </div>
+    </form>
+    <div id="quoteSuccess" class="booking-success hidden" aria-live="polite">
+      <div class="success-icon" aria-hidden="true">✓</div>
+      <div>
+        <h3>Your shipment request is in.</h3>
+        <p>Starling operations has received your details. Keep the reference below for follow-up.</p>
+        <span class="booking-ref" id="quoteSuccessRef">Received</span>
+      </div>
+      <div class="success-actions">
+        <button id="bookAnotherButton" type="button" class="btn btn-dark">Book another shipment</button>
+        <a class="btn btn-ghost" href="#tracking">Track a shipment</a>
+      </div>
+    </div>
+  </div>
 </div>
 </section>
 </main>
@@ -801,10 +922,10 @@ footer{background:var(--navy-deep);color:var(--steel-300);padding:80px 0 30px;}
 <div class="footer-col">
 <h4>Contact</h4>
 <ul>
-
-
-<li><a href="#">Banjul, The Gambia</a></li>
+<li><span>Banjul, The Gambia</span></li>
+<li><a href="https://starling-courier-service.onrender.com/admin.html" id="staffPortalLink" target="_blank" rel="noopener"><span class="shield-icon" aria-hidden="true">🛡️</span> Admin Portal</a></li>
 </ul>
+<p class="small" style="margin-top:12px;color:var(--steel-500);">Staff access is restricted to authorized Starling operations personnel.</p>
 </div>
 </div>
 <div class="dev-credit">Designed &amp; Developed by Royal FinTech Company</div>
@@ -818,185 +939,6 @@ footer{background:var(--navy-deep);color:var(--steel-300);padding:80px 0 30px;}
 </div>
 </div>
 </footer>
-<script>
-// Header scroll state
-const header = document.getElementById('siteHeader');
-window.addEventListener('scroll', () => {
-  header.classList.toggle('scrolled', window.scrollY > 40);
-}, {passive:true});
-
-// Mobile nav
-const mobileNav = document.getElementById('mobileNav');
-const menuToggle = document.getElementById('menuToggle');
-const menuClose = document.getElementById('menuClose');
-function openMenu(){mobileNav.classList.add('open'); menuToggle.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden';}
-function closeMenu(){mobileNav.classList.remove('open'); menuToggle.setAttribute('aria-expanded','false'); document.body.style.overflow='';}
-menuToggle.addEventListener('click', openMenu);
-menuClose.addEventListener('click', closeMenu);
-mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-
-// Reveal on scroll
-const revealEls = document.querySelectorAll('.reveal');
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
-}, {threshold:0.15});
-revealEls.forEach(el => revealObserver.observe(el));
-
-// Live tracking API
-const tlSteps = document.querySelectorAll('.tl-step');
-const fillLine = document.getElementById('fillLine');
-const statusLabel = document.getElementById('statusLabel');
-const trackForm = document.getElementById('trackForm');
-const trackInput = document.getElementById('trackInput');
-const trackMessage = document.getElementById('trackMessage');
-const originLabel = document.getElementById('originLabel');
-const destinationLabel = document.getElementById('destinationLabel');
-const etaLabel = document.getElementById('etaLabel');
-const trackingDetail = document.getElementById('trackingDetail');
-const trackingNumberLabel = document.getElementById('trackingNumberLabel');
-const serviceTypeLabel = document.getElementById('serviceTypeLabel');
-const updatedLabel = document.getElementById('updatedLabel');
-const eventHistory = document.getElementById('eventHistory');
-const trackButton = trackForm.querySelector('button[type="submit"]');
-const apiBase = window.STARLING_API_BASE || window.location.origin;
-
-const quoteForm = document.getElementById('quoteForm');
-const quoteMessage = document.getElementById('quoteMessage');
-if (quoteForm) {
-  quoteForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    quoteMessage.textContent = 'Submitting your quote request…';
-    const form = new FormData(quoteForm);
-    const payload = Object.fromEntries(form.entries());
-    try {
-      const response = await fetch(`${apiBase}/api/quotes`, {
-        method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Unable to submit quote request.');
-      quoteForm.reset();
-      quoteMessage.textContent = `Quote request received. Reference: ${data.quoteRequest.id}`;
-    } catch (error) {
-      quoteMessage.textContent = error.message || 'Unable to submit quote request.';
-    }
-  });
-}
-
-const statusOrder = ['created','picked_up','in_transit','out_for_delivery','delivered'];
-const statusNames = {
-  created: 'Shipment Created',
-  picked_up: 'Picked Up',
-  in_transit: 'In Transit',
-  out_for_delivery: 'Out for Delivery',
-  delivered: 'Delivered',
-  cancelled: 'Cancelled'
-};
-
-function setTimelineStep(activeIndex, status) {
-  tlSteps.forEach((step, i) => {
-    step.classList.remove('active','done');
-    if (i < activeIndex) step.classList.add('done');
-    else if (i === activeIndex) step.classList.add('active');
-  });
-  fillLine.style.width = Math.max(0, Math.min(100, (activeIndex / (tlSteps.length - 1)) * 100)) + '%';
-  statusLabel.textContent = statusNames[status] || status || 'Unknown';
-}
-
-function formatDate(value) {
-  if (!value) return 'Not available';
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? 'Not available' : date.toLocaleString();
-}
-
-function renderEventHistory(events = []) {
-  eventHistory.replaceChildren();
-  if (!Array.isArray(events) || events.length === 0) {
-    const empty = document.createElement('p');
-    empty.textContent = 'No shipment events have been recorded yet.';
-    empty.style.color = '#5b6479';
-    eventHistory.appendChild(empty);
-    return;
-  }
-  [...events].reverse().forEach(event => {
-    const row = document.createElement('div'); row.className = 'event-item';
-    const marker = document.createElement('div'); marker.className = 'event-marker';
-    const content = document.createElement('div'); content.className = 'event-content';
-    const title = document.createElement('strong'); title.textContent = statusNames[event.status] || event.status || 'Shipment update';
-    const meta = document.createElement('div'); meta.className = 'event-meta';
-    meta.textContent = [event.location, formatDate(event.occurredAt)].filter(Boolean).join(' • ');
-    content.append(title, meta);
-    if (event.note) { const note = document.createElement('p'); note.textContent = event.note; content.appendChild(note); }
-    row.append(marker, content); eventHistory.appendChild(row);
-  });
-}
-
-function resetTracking() {
-  tlSteps.forEach(step => step.classList.remove('active','done'));
-  fillLine.style.width = '0%';
-  statusLabel.textContent = 'Awaiting tracking';
-  originLabel.textContent = '—';
-  destinationLabel.textContent = '—';
-  etaLabel.textContent = '—';
-  trackingNumberLabel.textContent = '—';
-  serviceTypeLabel.textContent = '—';
-  updatedLabel.textContent = '—';
-  eventHistory.replaceChildren();
-  trackingDetail.classList.remove('visible');
-  trackMessage.classList.remove('tracking-error');
-}
-resetTracking();
-
-trackForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const value = trackInput.value.trim().toUpperCase();
-  trackMessage.classList.remove('tracking-error');
-  if (!/^[A-Z0-9-]{4,40}$/.test(value)) {
-    trackMessage.textContent = 'Enter a valid tracking number.';
-    trackMessage.classList.add('tracking-error');
-    resetTracking();
-    return;
-  }
-
-  trackButton.disabled = true;
-  trackButton.textContent = 'Checking…';
-  trackMessage.textContent = 'Checking shipment status…';
-  try {
-    const response = await fetch(`${apiBase}/api/shipments/${encodeURIComponent(value)}`, { headers: { 'Accept': 'application/json' } });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'Shipment could not be found.');
-
-    const shipment = data.shipment;
-    const statusIndex = statusOrder.indexOf(shipment.status);
-    setTimelineStep(statusIndex >= 0 ? statusIndex : 0, shipment.status);
-    if (shipment.status === 'cancelled') fillLine.style.width = '0%';
-    originLabel.textContent = [shipment.origin_city, shipment.origin_country].filter(Boolean).join(', ') || 'Not available';
-    destinationLabel.textContent = [shipment.destination_city, shipment.destination_country].filter(Boolean).join(', ') || 'Not available';
-    etaLabel.textContent = formatDate(shipment.estimated_delivery_at);
-    trackingNumberLabel.textContent = shipment.tracking_number || value;
-    serviceTypeLabel.textContent = shipment.service_type || 'Not specified';
-    updatedLabel.textContent = formatDate(shipment.updated_at);
-    renderEventHistory(shipment.events);
-    trackingDetail.classList.add('visible');
-    trackMessage.textContent = `Showing live tracking for ${shipment.tracking_number}`;
-    const url = new URL(window.location.href);
-    url.searchParams.set('tracking', shipment.tracking_number);
-    history.replaceState(null, '', url);
-  } catch (error) {
-    resetTracking();
-    trackMessage.textContent = error.message || 'Unable to retrieve shipment status.';
-    trackMessage.classList.add('tracking-error');
-  } finally {
-    trackButton.disabled = false;
-    trackButton.textContent = 'Track Shipment';
-  }
-});
-
-const trackingFromUrl = new URLSearchParams(window.location.search).get('tracking');
-if (trackingFromUrl) {
-  trackInput.value = trackingFromUrl.toUpperCase();
-  trackForm.requestSubmit();
-}
-
-</script>
+<script src="app.js" defer></script>
 </body>
 </html>
