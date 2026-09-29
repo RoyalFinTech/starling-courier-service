@@ -14,7 +14,22 @@ const allowedOrigins = (process.env.CORS_ORIGIN || '').split(',').map(v => v.tri
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.resolve(__dirname, '../public');
 
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      baseUri: ["'self'"],
+      connectSrc: ["'self'"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      formAction: ["'self'"],
+      frameAncestors: ["'self'"],
+      imgSrc: ["'self'", "data:"],
+      objectSrc: ["'none'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"]
+    }
+  }
+}));
 app.use(cors({
   origin(origin, callback) {
     if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) return callback(null, true);
