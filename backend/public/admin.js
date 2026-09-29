@@ -67,7 +67,35 @@ $('#closeDialog').onclick=()=>$('#shipmentDialog').close();
 $('#searchShipments').onclick=()=>{shipmentPage=0;loadShipments().catch(e=>$('#shipmentsBody').innerHTML=`<tr><td colspan="7" class="error">${esc(e.message)}</td></tr>`)};
 $('#clearShipmentFilters').onclick=()=>{$('#shipmentSearch').value='';$('#shipmentStatus').value='';shipmentPage=0;loadShipments()};
 $('#prevPage').onclick=()=>{if(shipmentPage>0){shipmentPage--;loadShipments()}};$('#nextPage').onclick=()=>{if((shipmentPage+1)*pageSize<totalShipments){shipmentPage++;loadShipments()}};
-async function loadQuotes(){const f=encodeURIComponent($('#quoteFilter').value);const d=await api('/api/admin/quotes?limit=50&status='+f);$('#quotes').innerHTML=d.quotes.map(q=>`<div class="item"><div class="row"><strong>${esc(q.name)}</strong><span class="status">${esc(q.status)}</span></div><div class="muted small">${esc(q.origin)} → ${esc(q.destination)} · ${esc(q.service_type)} · ${esc(q.email)}</div><div class="muted small">${esc(fmt(q.created_at))}</div><div class="toolbar" style="margin-top:8px"><button class="secondary qbtn" data-id="${esc(q.id)}" data-status="reviewing">Review</button><button class="secondary qbtn" data-id="${esc(q.id)}" data-status="quoted">Mark quoted</button><button class="secondary qbtn" data-id="${esc(q.id)}" data-status="closed">Close</button></div></div>`).join('')||'<p class="muted">No quote requests.</p>';document.querySelectorAll('.qbtn').forEach(b=>b.onclick=()=>setQuote(b.dataset.id,b.dataset.status))}
+function showQuoteRequest(q){
+  const money=q.declared_value==null?'—':`${q.declared_currency||''} ${q.declared_value}`;
+  const yesNo=v=>v?'Yes':'No';
+  $('#dialogTitle').textContent=`Shipment request ${String(q.id||'').slice(0,8).toUpperCase()}`;
+  $('#dialogSubtitle').textContent=`${q.name} · ${fmt(q.created_at)}`;
+  $('#dialogContent').innerHTML=`
+    <div class="grid">
+      <div><h3>👤 Customer</h3><div class="small"><strong>Name:</strong> ${esc(q.name)}<br><strong>Email:</strong> ${esc(q.email)}<br><strong>Phone:</strong> ${esc(q.phone||'—')}</div></div>
+      <div><h3>🛡️ Request</h3><div class="small"><strong>Reference:</strong> STQ-${esc(String(q.id||'').slice(0,8).toUpperCase())}<br><strong>Service:</strong> ${esc(q.service_type||'—')}<br><strong>Status:</strong> ${esc(q.status||'—')}</div></div>
+    </div>
+    <hr style="border:0;border-top:1px solid #edf0f4;margin:16px 0">
+    <div class="grid">
+      <div><h3>📍 Pickup</h3><div class="small"><strong>Address:</strong> ${esc(q.pickup_address||'—')}<br><strong>Area:</strong> ${esc(q.pickup_area||'—')}<br><strong>City:</strong> ${esc(q.pickup_city||'—')}<br><strong>State:</strong> ${esc(q.pickup_state||'—')}<br><strong>Country:</strong> ${esc(q.pickup_country||'—')}<br><strong>Postal:</strong> ${esc(q.pickup_postal_code||'—')}<br><strong>Contact:</strong> ${esc(q.pickup_contact_name||'—')} / ${esc(q.pickup_contact_phone||'—')}<br><strong>Preferred:</strong> ${esc(q.pickup_date||'—')} · ${esc(q.pickup_time_window||'—')}</div></div>
+      <div><h3>🌍 Delivery</h3><div class="small"><strong>Address:</strong> ${esc(q.delivery_address||'—')}<br><strong>Area:</strong> ${esc(q.delivery_area||'—')}<br><strong>City:</strong> ${esc(q.delivery_city||'—')}<br><strong>State:</strong> ${esc(q.delivery_state||'—')}<br><strong>Country:</strong> ${esc(q.delivery_country||'—')}<br><strong>Postal:</strong> ${esc(q.delivery_postal_code||'—')}<br><strong>Recipient:</strong> ${esc(q.recipient_name||'—')} / ${esc(q.recipient_phone||'—')}<br><strong>Email:</strong> ${esc(q.recipient_email||'—')}</div></div>
+    </div>
+    <hr style="border:0;border-top:1px solid #edf0f4;margin:16px 0">
+    <div class="grid">
+      <div><h3>📦 Package</h3><div class="small"><strong>Type:</strong> ${esc(q.package_type||'—')}<br><strong>Quantity:</strong> ${esc(q.package_quantity||'—')}<br><strong>Weight:</strong> ${esc(q.weight_kg??'—')} kg<br><strong>Size:</strong> ${esc(q.length_cm??'—')} × ${esc(q.width_cm??'—')} × ${esc(q.height_cm??'—')} cm<br><strong>Declared value:</strong> ${esc(money)}<br><strong>Fragile:</strong> ${yesNo(q.fragile)}<br><strong>Batteries/electronics:</strong> ${yesNo(q.contains_batteries)}</div></div>
+      <div><h3>📝 Handling notes</h3><div class="small"><strong>Contents:</strong><br>${esc(q.package_contents||'—')}<br><br><strong>Description:</strong><br>${esc(q.package_description||'—')}<br><br><strong>Special instructions:</strong><br>${esc(q.special_instructions||'—')}</div></div>
+    </div>`;
+  $('#shipmentDialog').showModal();
+}
+async function loadQuotes(){
+  const f=encodeURIComponent($('#quoteFilter').value);
+  const d=await api('/api/admin/quotes?limit=50&status='+f);
+  $('#quotes').innerHTML=d.quotes.map(q=>`<div class="item"><div class="row"><strong>${esc(q.name)}</strong><span class="status">${esc(q.status)}</span></div><div class="muted small">${esc(q.pickup_city||q.origin)} → ${esc(q.delivery_city||q.destination)} · ${esc(q.service_type)} · ${esc(q.email)}</div><div class="muted small">${esc(fmt(q.created_at))} · ${esc(q.package_type||'Package request')}</div><div class="toolbar" style="margin-top:8px"><button class="secondary qview" data-id="${esc(q.id)}">View full request</button><button class="secondary qbtn" data-id="${esc(q.id)}" data-status="reviewing">Review</button><button class="secondary qbtn" data-id="${esc(q.id)}" data-status="quoted">Mark quoted</button><button class="secondary qbtn" data-id="${esc(q.id)}" data-status="closed">Close</button></div></div>`).join('')||'<p class="muted">No shipment requests.</p>';
+  document.querySelectorAll('.qview').forEach(b=>b.onclick=()=>showQuoteRequest(d.quotes.find(q=>q.id===b.dataset.id)));
+  document.querySelectorAll('.qbtn').forEach(b=>b.onclick=()=>setQuote(b.dataset.id,b.dataset.status));
+}
 async function setQuote(id,status){try{await api('/api/admin/quotes/'+id+'/status',{method:'PATCH',body:JSON.stringify({status})});await loadQuotes();await loadOverview()}catch(e){alert(e.message)}}
 async function loadMessages(){const f=encodeURIComponent($('#messageFilter').value);const d=await api('/api/admin/messages?limit=50&status='+f);$('#messages').innerHTML=d.messages.map(m=>`<div class="item"><div class="row"><strong>${esc(m.name)}</strong><span class="status">${esc(m.status)}</span></div><div class="muted small">${esc(m.email)}${m.phone?' · '+esc(m.phone):''}</div><div style="margin:8px 0;font-size:13px">${esc(m.message)}</div><div class="toolbar"><button class="secondary mbtn" data-id="${esc(m.id)}" data-status="read">Mark read</button><button class="secondary mbtn" data-id="${esc(m.id)}" data-status="closed">Close</button></div></div>`).join('')||'<p class="muted">No contact messages.</p>';document.querySelectorAll('.mbtn').forEach(b=>b.onclick=()=>setMessage(b.dataset.id,b.dataset.status))}
 async function setMessage(id,status){try{await api('/api/admin/messages/'+id+'/status',{method:'PATCH',body:JSON.stringify({status})});await loadMessages();await loadOverview()}catch(e){alert(e.message)}}
