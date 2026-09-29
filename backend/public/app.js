@@ -251,4 +251,6 @@ if (trackingFromUrl) {
 }
 
 
-// Keep staff portal links aligned with the live backend origin.\nconst staffPortal = document.getElementById('staffPortalLink');\nif (staffPortal) staffPortal.href = apiBase + '/admin.html';\n
+// Keep staff portal links aligned with the live backend origin.
+const staffPortal = document.getElementById('staffPortalLink');
+if (staffPortal) staffPortal.href = apiBase + '/admin.html';
