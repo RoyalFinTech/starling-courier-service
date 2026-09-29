@@ -534,7 +534,18 @@ footer{background:var(--navy-deep);color:var(--steel-300);padding:80px 0 30px;}
 .form-field.invalid input,.form-field.invalid select,.form-field.invalid textarea{border-color:#e5484d;background:#fff8f8;box-shadow:0 0 0 3px rgba(229,72,77,.08);}
 .booking-actions{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:10px;padding-top:8px;}
 .booking-submit{min-width:210px;padding:14px 20px;border-radius:12px;}
-.booking-submit.is-loading{transform:none!important;}
+.booking-submit.is-loading{transform:none!important;}.phone-control{display:grid;grid-template-columns:minmax(175px,220px) 1fr;gap:8px;}
+.check-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.check-item{display:flex;align-items:center;gap:10px;padding:13px 14px;border:1px solid #d8dee8;border-radius:12px;background:#fbfcfe;cursor:pointer;font-size:13px;font-weight:700;color:#344054;}
+.check-item input{width:18px;height:18px;accent-color:var(--blue);margin:0;}
+.booking-3d-card{position:relative;min-height:190px;border:1px solid rgba(255,255,255,.08);border-radius:24px;background:radial-gradient(circle at 30% 30%,rgba(79,139,255,.22),transparent 48%),linear-gradient(145deg,#0f2148,#081026 75%);overflow:hidden;box-shadow:0 25px 65px -30px rgba(8,16,38,.55);}
+.booking-3d-card .cube{position:absolute;width:92px;height:92px;left:28%;top:20%;transform:rotateX(58deg) rotateZ(45deg);border-radius:10px;background:linear-gradient(145deg,#5d8fff,#234fb7);box-shadow:18px 18px 28px rgba(0,0,0,.25),inset -10px -12px 18px rgba(0,0,0,.16),inset 7px 6px 12px rgba(255,255,255,.2);animation:cubeFloat 6s ease-in-out infinite;}
+.booking-3d-card .cube:nth-child(2){width:58px;height:58px;right:18%;left:auto;top:24%;background:linear-gradient(145deg,#f5d17d,#b57d19);animation-delay:-2s;}
+.booking-3d-card .cube:nth-child(3){width:38px;height:38px;right:8%;left:auto;top:auto;bottom:18%;background:linear-gradient(145deg,#6ee7a7,#157a4c);animation-delay:-4s;}
+.booking-3d-card .orbit{position:absolute;inset:18px;border:1px solid rgba(255,255,255,.11);border-radius:50%;transform:rotateX(66deg) rotateY(-12deg);box-shadow:0 0 0 14px rgba(255,255,255,.02);}
+.booking-3d-card .label{position:absolute;left:18px;bottom:14px;font:600 10px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#b8c7dc;}
+@keyframes cubeFloat{0%,100%{translate:0 0}50%{translate:0 -10px}}
+@media(max-width:680px){.phone-control{grid-template-columns:1fr}.check-grid{grid-template-columns:1fr}.booking-3d-card{min-height:150px}}
 .booking-submit .spinner{width:15px;height:15px;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .booking-form-message{min-height:21px;margin-top:14px;font-size:12.5px;color:#667085;}
@@ -827,6 +838,7 @@ footer{background:var(--navy-deep);color:var(--steel-300);padding:80px 0 30px;}
       <h2>Plan your delivery with confidence.</h2>
       <p>Give Starling the essentials once. Our operations team receives the request directly and can follow up with the next step for your shipment.</p>
     </div>
+    <div class="booking-3d-card" aria-hidden="true"><div class="orbit"></div><div class="cube"></div><div class="cube"></div><div class="cube"></div><span class="label">SMART SHIPMENT // 3D ROUTING VIEW</span></div>
     <div class="booking-proof" aria-label="Booking benefits">
       <div class="booking-proof-item"><strong>One secure request</strong><span>All shipment essentials in one place.</span></div>
       <div class="booking-proof-item"><strong>Direct to operations</strong><span>No mock checkout or dead-end buttons.</span></div>
@@ -838,46 +850,52 @@ footer{background:var(--navy-deep);color:var(--steel-300);padding:80px 0 30px;}
       <span class="booking-secure"><i aria-hidden="true"></i> Connected to Starling operations</span>
     </div>
     <form class="booking-form" id="quoteForm" novalidate>
-      <div class="booking-form-section">
-        <div class="booking-section-head">
-          <div class="booking-step">01</div>
-          <div><h3>Your contact details</h3><p>Tell us who is booking the shipment.</p></div>
-        </div>
-        <div class="booking-form-grid">
-          <label class="form-field"><span>Full name <small>Required</small></span><input name="name" required placeholder="e.g. Amadou Jallow" autocomplete="name"></label>
-          <label class="form-field"><span>Phone number <small>Required</small></span><input name="phone" required placeholder="+220 3xx xxx" autocomplete="tel" inputmode="tel"></label>
-          <label class="form-field full"><span>Email address <small>Required</small></span><input name="email" required type="email" placeholder="you@example.com" autocomplete="email"></label>
-        </div>
-      </div>
-      <div class="booking-form-section">
-        <div class="booking-section-head">
-          <div class="booking-step">02</div>
-          <div><h3>Pickup &amp; destination</h3><p>Set the route for your parcel, document or freight.</p></div>
-        </div>
-        <div class="booking-form-grid">
-          <label class="form-field"><span>Pickup location <small>Required</small></span><input name="origin" required placeholder="City, area or pickup address" autocomplete="street-address"></label>
-          <label class="form-field"><span>Destination <small>Required</small></span><input name="destination" required placeholder="City, area or delivery address"></label>
-        </div>
-      </div>
-      <div class="booking-form-section">
-        <div class="booking-section-head">
-          <div class="booking-step">03</div>
-          <div><h3>Shipment details</h3><p>Choose the service and describe what you are sending.</p></div>
-        </div>
-        <div class="booking-form-grid">
-          <label class="form-field"><span>Service type <small>Required</small></span><select name="serviceType" required><option value="">Select a service</option><option>Domestic Delivery</option><option>International Shipping</option><option>Air Freight</option><option>Express Delivery</option></select></label>
-          <label class="form-field"><span>Approx. weight <small>Optional</small></span><input name="weightKg" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="e.g. 2.5"></label>
-          <label class="form-field full"><span>Package description <small>Optional</small></span><textarea name="packageDescription" rows="4" maxlength="3000" placeholder="What are you sending? Include useful details such as size, quantity, or handling needs."></textarea></label>
-        </div>
-      </div>
-      <div class="booking-actions">
-        <div>
-          <p class="booking-note">By submitting, you are sending this request directly to Starling Courier Service for operational follow-up. This is a quote request, not an automatic payment.</p>
-          <p aria-live="polite" id="quoteMessage" class="booking-form-message"></p>
-        </div>
-        <button class="btn btn-primary booking-submit" id="submitQuoteButton" type="submit"><span>Submit booking request</span><span aria-hidden="true">→</span></button>
-      </div>
-    </form>
+  <div class="booking-form-section"><div class="booking-section-head"><div class="booking-step">01</div><div><h3>👤 Your contact details</h3><p>We use these details to confirm the request and reach you quickly.</p></div></div><div class="booking-form-grid">
+    <label class="form-field"><span>Full name <small>Required</small></span><input name="name" required placeholder="e.g. Amadou Jallow" autocomplete="name"></label>
+    <label class="form-field"><span>Email address <small>Required</small></span><input name="email" required type="email" placeholder="you@example.com" autocomplete="email"></label>
+    <div class="form-field full"><span>Phone number <small>Required</small></span><div class="phone-control"><select name="phoneCountry" class="phone-country" aria-label="Phone country code" required>
+      <option value="+1">🇺🇸 United States +1</option><option value="+234" selected>🇳🇬 Nigeria +234</option><option value="+220">🇬🇲 The Gambia +220</option><option value="+233">🇬🇭 Ghana +233</option><option value="+971">🇦🇪 United Arab Emirates +971</option><option value="+44">🇬🇧 United Kingdom +44</option><option value="+221">🇸🇳 Senegal +221</option><option value="+225">🇨🇮 Côte d’Ivoire +225</option><option value="+254">🇰🇪 Kenya +254</option><option value="+27">🇿🇦 South Africa +27</option><option value="+1">🇨🇦 Canada +1</option><option value="+33">🇫🇷 France +33</option><option value="+49">🇩🇪 Germany +49</option>
+    </select><input name="phoneNumber" required placeholder="801 234 5678" autocomplete="tel-national" inputmode="tel"></div></div>
+  </div></div>
+  <div class="booking-form-section"><div class="booking-section-head"><div class="booking-step">02</div><div><h3>📍 Pickup details</h3><p>Tell Starling exactly where the shipment will be collected.</p></div></div><div class="booking-form-grid">
+    <label class="form-field full"><span>Pickup address <small>Required</small></span><input name="pickupAddress" required placeholder="House/building, street and closest landmark"></label>
+    <label class="form-field"><span>Area / district</span><input name="pickupArea" placeholder="e.g. Wuse 2 / Kololi"></label>
+    <label class="form-field"><span>City <small>Required</small></span><input name="pickupCity" required placeholder="e.g. Abuja"></label>
+    <label class="form-field"><span>State / region</span><input name="pickupState" placeholder="e.g. FCT"></label>
+    <label class="form-field"><span>Country <small>Required</small></span><input name="pickupCountry" required value="Nigeria" placeholder="Nigeria"></label>
+    <label class="form-field"><span>Postal / ZIP code</span><input name="pickupPostalCode" placeholder="Postal code"></label>
+    <label class="form-field"><span>Pickup contact name</span><input name="pickupContactName" placeholder="Person handing over the package"></label>
+    <div class="form-field"><span>Pickup contact phone</span><div class="phone-control"><select name="pickupPhoneCountry" class="phone-country" aria-label="Pickup contact country code"><option value="+234" selected>🇳🇬 +234</option><option value="+220">🇬🇲 +220</option><option value="+1">🇺🇸 +1</option><option value="+233">🇬🇭 +233</option><option value="+971">🇦🇪 +971</option><option value="+44">🇬🇧 +44</option><option value="+221">🇸🇳 +221</option><option value="+225">🇨🇮 +225</option><option value="+254">🇰🇪 +254</option><option value="+27">🇿🇦 +27</option><option value="+33">🇫🇷 +33</option><option value="+49">🇩🇪 +49</option></select><input name="pickupContactPhone" placeholder="Phone number" inputmode="tel"></div></div>
+    <label class="form-field"><span>Preferred pickup date</span><input name="pickupDate" type="date"></label>
+    <label class="form-field"><span>Preferred time window</span><select name="pickupTimeWindow"><option value="">Select time</option><option>Morning (8am–12pm)</option><option>Afternoon (12pm–4pm)</option><option>Evening (4pm–7pm)</option><option>Anytime</option></select></label>
+  </div></div>
+  <div class="booking-form-section"><div class="booking-section-head"><div class="booking-step">03</div><div><h3>🌍 Delivery details</h3><p>Provide the complete destination and recipient information.</p></div></div><div class="booking-form-grid">
+    <label class="form-field full"><span>Delivery address <small>Required</small></span><input name="deliveryAddress" required placeholder="House/building, street and closest landmark"></label>
+    <label class="form-field"><span>Area / district</span><input name="deliveryArea" placeholder="e.g. Victoria Island / Deira"></label>
+    <label class="form-field"><span>City <small>Required</small></span><input name="deliveryCity" required placeholder="e.g. Lagos"></label>
+    <label class="form-field"><span>State / region</span><input name="deliveryState" placeholder="e.g. Lagos State"></label>
+    <label class="form-field"><span>Country <small>Required</small></span><input name="deliveryCountry" required placeholder="e.g. United Arab Emirates"></label>
+    <label class="form-field"><span>Postal / ZIP code</span><input name="deliveryPostalCode" placeholder="Postal code"></label>
+    <label class="form-field"><span>Recipient name <small>Required</small></span><input name="recipientName" required placeholder="Full recipient name"></label>
+    <div class="form-field"><span>Recipient phone</span><div class="phone-control"><select name="recipientPhoneCountry" class="phone-country" aria-label="Recipient country code"><option value="+234">🇳🇬 +234</option><option value="+220">🇬🇲 +220</option><option value="+1" selected>🇺🇸 +1</option><option value="+233">🇬🇭 +233</option><option value="+971">🇦🇪 +971</option><option value="+44">🇬🇧 +44</option><option value="+221">🇸🇳 +221</option><option value="+225">🇨🇮 +225</option><option value="+254">🇰🇪 +254</option><option value="+27">🇿🇦 +27</option><option value="+33">🇫🇷 +33</option><option value="+49">🇩🇪 +49</option></select><input name="recipientPhone" placeholder="Phone number" inputmode="tel"></div></div>
+    <label class="form-field"><span>Recipient email</span><input name="recipientEmail" type="email" placeholder="recipient@example.com"></label>
+  </div></div>
+  <div class="booking-form-section"><div class="booking-section-head"><div class="booking-step">04</div><div><h3>📦 Package information</h3><p>Give operations enough detail to plan handling, pricing and routing.</p></div></div><div class="booking-form-grid">
+    <label class="form-field"><span>Package type <small>Required</small></span><select name="packageType" required><option value="">Select type</option><option>Document / envelope</option><option>Parcel</option><option>Box</option><option>Fragile item</option><option>Electronics</option><option>Clothing / fashion</option><option>Food / non-perishable</option><option>Commercial goods</option><option>Other</option></select></label>
+    <label class="form-field"><span>Quantity <small>Required</small></span><input name="packageQuantity" required type="number" min="1" max="10000" step="1" value="1" inputmode="numeric"></label>
+    <label class="form-field"><span>Approx. weight (kg)</span><input name="weightKg" type="number" min="0.01" max="100000" step="0.01" inputmode="decimal" placeholder="e.g. 2.5"></label>
+    <label class="form-field"><span>Length (cm)</span><input name="lengthCm" type="number" min="0" step="0.1" placeholder="e.g. 30"></label>
+    <label class="form-field"><span>Width (cm)</span><input name="widthCm" type="number" min="0" step="0.1" placeholder="e.g. 20"></label>
+    <label class="form-field"><span>Height (cm)</span><input name="heightCm" type="number" min="0" step="0.1" placeholder="e.g. 15"></label>
+    <label class="form-field"><span>Declared value</span><input name="declaredValue" type="number" min="0" step="0.01" placeholder="Optional value for customs/handling"></label>
+    <label class="form-field"><span>Value currency</span><select name="declaredCurrency"><option value="">Select currency</option><option value="USD">🇺🇸 USD — US Dollar</option><option value="NGN">🇳🇬 NGN — Nigerian Naira</option><option value="GMD">🇬🇲 GMD — Gambian Dalasi</option><option value="GHS">🇬🇭 GHS — Ghanaian Cedi</option><option value="AED">🇦🇪 AED — UAE Dirham</option><option value="GBP">🇬🇧 GBP — Pound Sterling</option><option value="EUR">🇪🇺 EUR — Euro</option></select></label>
+    <label class="form-field full"><span>What are you sending? <small>Required</small></span><textarea name="packageContents" required rows="3" maxlength="3000" placeholder="Describe the actual contents, quantity and anything operations should know before pickup."></textarea></label>
+    <label class="form-field full"><span>Package description</span><textarea name="packageDescription" rows="3" maxlength="3000" placeholder="Size, packaging, handling requirements, business or personal shipment context."></textarea></label>
+    <div class="form-field full check-grid"><label class="check-item"><input type="checkbox" name="fragile" value="true"><span>⚠️ Fragile</span></label><label class="check-item"><input type="checkbox" name="containsBatteries" value="true"><span>🔋 Contains batteries / electronics</span></label></div>
+  </div></div>
+  <div class="booking-form-section"><div class="booking-section-head"><div class="booking-step">05</div><div><h3>📝 Delivery &amp; handling notes</h3><p>Add anything the courier team should know.</p></div></div><div class="booking-form-grid"><label class="form-field full"><span>Special instructions</span><textarea name="specialInstructions" rows="4" maxlength="4000" placeholder="Landmarks, access instructions, preferred handling, customs notes, delivery concerns, or other useful information."></textarea></label></div></div>
+  <div class="booking-actions"><div><p class="booking-note">🔒 This request goes directly to Starling operations. Please provide accurate address and package details so the team can confirm routing and handling.</p><p aria-live="polite" id="quoteMessage" class="booking-form-message"></p></div><button class="btn btn-primary booking-submit" id="submitQuoteButton" type="submit"><span>Submit shipment request</span><span aria-hidden="true">→</span></button></div>
+</form>
     <div id="quoteSuccess" class="booking-success hidden" aria-live="polite">
       <div class="success-icon" aria-hidden="true">✓</div>
       <div>
