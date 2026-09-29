@@ -81,6 +81,20 @@ if (quoteForm) {
 
     const form = new FormData(quoteForm);
     const payload = Object.fromEntries(form.entries());
+    const joinPhone = (countryField, numberField) => {
+      const number = String(payload[numberField] || '').replace(/\s+/g, ' ').trim();
+      const country = String(payload[countryField] || '').trim();
+      return number ? `${country} ${number}` : '';
+    };
+    payload.phone = joinPhone('phoneCountry', 'phoneNumber');
+    payload.pickupContactPhone = joinPhone('pickupPhoneCountry', 'pickupContactPhone');
+    payload.recipientPhone = joinPhone('recipientPhoneCountry', 'recipientPhone');
+    payload.origin = [payload.pickupCity, payload.pickupCountry].filter(Boolean).join(', ');
+    payload.destination = [payload.deliveryCity, payload.deliveryCountry].filter(Boolean).join(', ');
+    delete payload.phoneCountry;
+    delete payload.phoneNumber;
+    delete payload.pickupPhoneCountry;
+    delete payload.recipientPhoneCountry;
     submitQuoteButton.disabled = true;
     submitQuoteButton.classList.add('is-loading');
     submitQuoteButton.innerHTML = '<span class="spinner" aria-hidden="true"></span> Sending request…';
