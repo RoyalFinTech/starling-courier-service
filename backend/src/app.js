@@ -10,7 +10,9 @@ import { sendTransactional, shipmentStatusEmail } from './email.js';
 
 const app = express();
 app.set('trust proxy', 1);
-const allowedOrigins = (process.env.CORS_ORIGIN || '').split(',').map(v => v.trim()).filter(Boolean);
+const configuredOrigins = (process.env.CORS_ORIGIN || '').split(',').map(v => v.trim()).filter(Boolean);
+const serviceOrigin = process.env.RENDER_EXTERNAL_URL || 'https://starling-courier-service.onrender.com';
+const allowedOrigins = new Set([...configuredOrigins, serviceOrigin].map(value => { try { return new URL(value).origin; } catch { return ''; } }).filter(Boolean));
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.resolve(__dirname, '../public');
 
@@ -32,7 +34,11 @@ app.use(helmet({
 }));
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) return callback(null, true);
+    if (!origin) return callback(null, true);
+    try {
+      const normalized = new URL(origin).origin;
+      if (allowedOrigins.has(normalized)) return callback(null, true);
+    } catch {}
     return callback(new Error('Origin not allowed'));
   }
 }));
@@ -129,26 +135,33 @@ app.get('/api/admin/events', async (req, res, next) => {
 
 app.post('/api/quotes', publicWriteLimit, async (req, res) => {
   const b = req.body || {};
-  const name = clean(b.name, 160), email = clean(b.email, 320).toLowerCase();
-  const origin = clean(b.origin, 180), destination = clean(b.destination, 180), serviceType = clean(b.serviceType, 80);
-  const phone = clean(b.phone, 40), packageDescription = clean(b.packageDescription, 3000);
-  const weightKg = b.weightKg == null || b.weightKg === '' ? null : Number(b.weightKg);
-  if (!name || !email || !origin || !destination || !serviceType) return res.status(400).json({ error: 'Name, email, origin, destination and service type are required.' });
-  if (!emailOk(email)) return res.status(400).json({ error: 'Invalid email address.' });
-  if (weightKg !== null && (!Number.isFinite(weightKg) || weightKg <= 0 || weightKg > 100000)) return res.status(400).json({ error: 'Weight must be a positive number.' });
-  const { rows } = await query(`INSERT INTO quote_requests (name,email,phone,origin,destination,service_type,package_description,weight_kg) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id,status,created_at`, [name,email,phone||null,origin,destination,serviceType,packageDescription||null,weightKg]);
-  if (process.env.NOTIFICATION_EMAIL) {
-    await sendTransactional({
-      eventKey: `quote:${rows[0].id}:admin`, to: process.env.NOTIFICATION_EMAIL, type: 'quote.received',
-      subject: `New quote request from ${name}`,
-      text: `New quote request from ${name} (${email}). ${origin} to ${destination}. Service: ${serviceType}.`,
-      html: `<div style=\"font-family:Arial,sans-serif;line-height:1.6\"><h2>New quote request</h2><p><strong>${clean(name,160)}</strong> (${clean(email,320)})</p><p>${clean(origin,180)} → ${clean(destination,180)}</p><p>Service: ${clean(serviceType,80)}</p></div>`
-    });
-  }
-  broadcast('quote.created', { id: rows[0].id, createdAt: rows[0].created_at });
-  res.status(201).json({ quoteRequest: rows[0] });
+  const text = (key, max) => clean(b[key], max);
+  const numberOrNull = value => { if (value == null || value === '') return null; const n = Number(value); return Number.isFinite(n) ? n : NaN; };
+  const integerOrNull = value => { if (value == null || value === '') return null; const n = Number(value); return Number.isInteger(n) ? n : NaN; };
+  const booleanValue = value => value === true || value === 'true' || value === 'on' || value === '1';
+  const name = text('name',160), email = text('email',320).toLowerCase(), phone = text('phone',60), serviceType = text('serviceType',80);
+  const pickupAddress=text('pickupAddress',300), pickupArea=text('pickupArea',160), pickupCity=text('pickupCity',120), pickupState=text('pickupState',120), pickupCountry=text('pickupCountry',120), pickupPostalCode=text('pickupPostalCode',40);
+  const pickupContactName=text('pickupContactName',160), pickupContactPhone=text('pickupContactPhone',60), pickupDate=text('pickupDate',10), pickupTimeWindow=text('pickupTimeWindow',80);
+  const deliveryAddress=text('deliveryAddress',300), deliveryArea=text('deliveryArea',160), deliveryCity=text('deliveryCity',120), deliveryState=text('deliveryState',120), deliveryCountry=text('deliveryCountry',120), deliveryPostalCode=text('deliveryPostalCode',40);
+  const recipientName=text('recipientName',160), recipientPhone=text('recipientPhone',60), recipientEmail=text('recipientEmail',320).toLowerCase();
+  const packageType=text('packageType',80), packageQuantity=integerOrNull(b.packageQuantity), packageContents=text('packageContents',3000), packageDescription=text('packageDescription',3000);
+  const weightKg=numberOrNull(b.weightKg), lengthCm=numberOrNull(b.lengthCm), widthCm=numberOrNull(b.widthCm), heightCm=numberOrNull(b.heightCm);
+  const declaredValue=numberOrNull(b.declaredValue), declaredCurrency=text('declaredCurrency',3).toUpperCase();
+  const fragile=booleanValue(b.fragile), containsBatteries=booleanValue(b.containsBatteries), specialInstructions=text('specialInstructions',4000);
+  const origin=[pickupCity,pickupCountry].filter(Boolean).join(', '), destination=[deliveryCity,deliveryCountry].filter(Boolean).join(', ');
+  if (!name || !email || !phone || !serviceType || !pickupAddress || !pickupCity || !pickupCountry || !deliveryAddress || !deliveryCity || !deliveryCountry || !recipientName || !packageType || !packageQuantity || !packageContents) return res.status(400).json({error:'Please provide contact, pickup, delivery and package details before submitting.'});
+  if (!emailOk(email) || (recipientEmail && !emailOk(recipientEmail))) return res.status(400).json({error:'Please provide valid email addresses.'});
+  if (weightKg !== null && (!Number.isFinite(weightKg) || weightKg <= 0 || weightKg > 100000)) return res.status(400).json({error:'Weight must be a positive number.'});
+  for (const [label,value] of [['length',lengthCm],['width',widthCm],['height',heightCm],['declared value',declaredValue]]) if (value !== null && (!Number.isFinite(value) || value < 0 || value > 100000000)) return res.status(400).json({error:`${label} is invalid.`});
+  if (packageQuantity !== null && (packageQuantity < 1 || packageQuantity > 10000)) return res.status(400).json({error:'Package quantity must be between 1 and 10,000.'});
+  if (declaredValue !== null && !/^[A-Z]{3}$/.test(declaredCurrency)) return res.status(400).json({error:'Please choose a valid declared-value currency.'});
+  if (pickupDate && !/^\d{4}-\d{2}-\d{2}$/.test(pickupDate)) return res.status(400).json({error:'Pickup date is invalid.'});
+  const {rows}=await query(`INSERT INTO quote_requests (name,email,phone,origin,destination,service_type,package_description,weight_kg,pickup_address,pickup_area,pickup_city,pickup_state,pickup_country,pickup_postal_code,pickup_contact_name,pickup_contact_phone,pickup_date,pickup_time_window,delivery_address,delivery_area,delivery_city,delivery_state,delivery_country,delivery_postal_code,recipient_name,recipient_phone,recipient_email,package_type,package_quantity,package_contents,length_cm,width_cm,height_cm,declared_value,declared_currency,fragile,contains_batteries,special_instructions) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36,$37,$38) RETURNING id,status,created_at`,[name,email,phone,origin,destination,serviceType,packageDescription||null,weightKg,pickupAddress||null,pickupArea||null,pickupCity,pickupState||null,pickupCountry,pickupPostalCode||null,pickupContactName||null,pickupContactPhone||null,pickupDate||null,pickupTimeWindow||null,deliveryAddress||null,deliveryArea||null,deliveryCity,deliveryState||null,deliveryCountry,deliveryPostalCode||null,recipientName,recipientPhone||null,recipientEmail||null,packageType,packageQuantity,packageContents||null,lengthCm,widthCm,heightCm,declaredValue,declaredValue===null?null:declaredCurrency,fragile,containsBatteries,specialInstructions||null]);
+  const reference=`STQ-${rows[0].id.split('-')[0].toUpperCase()}`;
+  if (process.env.NOTIFICATION_EMAIL) { await sendTransactional({eventKey:`quote:${rows[0].id}:admin`,to:process.env.NOTIFICATION_EMAIL,type:'quote.received',subject:`New shipment request ${reference} from ${name}`,text:[`Shipment request: ${reference}`,`Customer: ${name} <${email}> | ${phone}`,`Service: ${serviceType}`,`Pickup: ${pickupAddress}, ${pickupCity}, ${pickupCountry}`,`Delivery: ${deliveryAddress}, ${deliveryCity}, ${deliveryCountry}`,`Recipient: ${recipientName} | ${recipientPhone || '—'} | ${recipientEmail || '—'}`,`Package: ${packageType}, quantity ${packageQuantity}, ${weightKg ?? '—'} kg`,`Contents: ${packageContents}`,`Instructions: ${specialInstructions || '—'}`].join('\n')}).catch(()=>{}); }
+  broadcast('quote.created',{id:rows[0].id,reference,createdAt:rows[0].created_at});
+  res.status(201).json({quoteRequest:rows[0],reference});
 });
-
 app.post('/api/contact', publicWriteLimit, async (req, res) => {
   const b=req.body||{}; const name=clean(b.name,160), email=clean(b.email,320).toLowerCase(), phone=clean(b.phone,40), message=clean(b.message,5000);
   if (!name || !email || !message) return res.status(400).json({ error: 'Name, email and message are required.' });
