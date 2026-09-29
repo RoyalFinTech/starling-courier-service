@@ -25,3 +25,14 @@
 - Moved customer/admin inline JavaScript into dedicated external assets so the backend Content Security Policy can enforce same-origin scripts.
 - Hardened backend Helmet CSP while preserving the existing inline visual styles and Google Fonts.
 - Updated Render Blueprint to use the production Supabase PostgreSQL connection via `DATABASE_URL` sync rather than provisioning a duplicate Render Postgres database.
+
+
+## 2026-09-29 — Main engineering QA / booking hardening
+- Reproduced the admin portal 500 and traced it to CORS rejection of the Render-hosted admin origin (Origin not allowed), not JWT signing.
+- Updated CORS to allow the configured public origin plus the Render service origin while keeping explicit origin validation.
+- Expanded shipment booking data capture with full pickup/delivery address information, contacts, pickup timing, package type/quantity/contents, dimensions, declared value/currency, fragile/battery flags, and handling instructions.
+- Added country-code selectors with flag emojis for the primary customer, pickup contact, and recipient phone numbers; the browser composes the final phone values before sending to the API.
+- Updated the admin operations portal to expose the complete shipment request in a staff-only details view.
+- Added a backend API/booking contract QA script and wired it into npm run check and CI to catch route or form-field drift before deployment.
+- Recorded the expanded booking schema in a Supabase migration file and applied the migration to production.
+- Added a lightweight 3D shipment-routing visual and emoji cues to the booking interface without third-party visual dependencies.
