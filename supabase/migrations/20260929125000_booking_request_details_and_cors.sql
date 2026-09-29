@@ -1,0 +1,31 @@
+alter table public.quote_requests
+  add column if not exists pickup_address varchar(300),
+  add column if not exists pickup_area varchar(160),
+  add column if not exists pickup_city varchar(120),
+  add column if not exists pickup_state varchar(120),
+  add column if not exists pickup_country varchar(120),
+  add column if not exists pickup_postal_code varchar(40),
+  add column if not exists pickup_contact_name varchar(160),
+  add column if not exists pickup_contact_phone varchar(60),
+  add column if not exists pickup_date date,
+  add column if not exists pickup_time_window varchar(80),
+  add column if not exists delivery_address varchar(300),
+  add column if not exists delivery_area varchar(160),
+  add column if not exists delivery_city varchar(120),
+  add column if not exists delivery_state varchar(120),
+  add column if not exists delivery_country varchar(120),
+  add column if not exists delivery_postal_code varchar(40),
+  add column if not exists package_type varchar(80),
+  add column if not exists package_quantity integer,
+  add column if not exists package_contents text,
+  add column if not exists length_cm numeric,
+  add column if not exists width_cm numeric,
+  add column if not exists height_cm numeric,
+  add column if not exists declared_value numeric,
+  add column if not exists declared_currency varchar(3),
+  add column if not exists fragile boolean default false,
+  add column if not exists contains_batteries boolean default false,
+  add column if not exists special_instructions text;
+
+create index if not exists quote_requests_status_created_idx
+  on public.quote_requests (status, created_at desc);
